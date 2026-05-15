@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mosaico · Seguimiento territorial LEADER para Grupos de Acción Local</title>
+<meta name="description" content="Mosaico convierte tu EDLP 2023-2027 en un dashboard vivo. Visor de proyectos LEADER, indicadores de cobertura territorial y memoria con un clic. Demo en vivo con datos de FADETA Tajo-Tajuña." />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232D5A3D'/><path d='M9 22V13l7-4 7 4v9' stroke='white' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/><circle cx='16' cy='17' r='2.2' fill='white'/></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/main.css" />
+<link rel="stylesheet" href="assets/css/landing.css" />
+</head>
+<body>
+
+<!-- =========== Topbar =========== -->
+<header class="topbar">
+  <a class="brand" href="./">
+    <span class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 17l9-5 9 5"/><path d="M3 12l9-5 9 5"/><path d="M3 7l9-5 9 5"/>
+      </svg>
+    </span>
+    <span class="brand-name">Mosaico<span class="sub">por Darwin Geospatial</span></span>
+  </a>
+  <nav class="nav-links">
+    <a href="#producto">Producto</a>
+    <a href="#como-funciona">Cómo funciona</a>
+    <a href="#precios">Precios</a>
+    <a href="visor.html">Demo</a>
+  </nav>
+  <div style="display:flex; gap:8px;">
+    <a href="visor.html" class="btn btn-primary btn-sm">
+      Abrir demo
+      <svg viewBox="0 0 20 20" fill="currentColor"><path d="M3 10a1 1 0 011-1h9.586L10.293 5.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414-1.414L13.586 11H4a1 1 0 01-1-1z"/></svg>
+    </a>
+  </div>
+</header>
+
+<!-- =========== Hero =========== -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <span class="hero-eyebrow"><span class="dot"></span> Demo activa · FADETA Tajo-Tajuña</span>
+        <h1>El territorio <em>LEADER</em><br/>en una pantalla.</h1>
+        <p class="hero-sub">
+          Mosaico convierte tu Estrategia de Desarrollo Local Participativo 2023-2027 en un dashboard vivo:
+          dónde están los proyectos, qué municipios quedan fuera de cobertura y memorias listas para justificar al PEPAC — sin Excel.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="visor.html">
+            Abrir el visor en vivo
+            <svg viewBox="0 0 20 20" fill="currentColor"><path d="M3 10a1 1 0 011-1h9.586L10.293 5.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414-1.414L13.586 11H4a1 1 0 01-1-1z"/></svg>
+          </a>
+          <a class="btn btn-ghost" href="memoria.html">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 3v14M3 7h14M3 14h14"/>
+            </svg>
+            Ver memoria auto-generada
+          </a>
+        </div>
+
+        <div class="hero-meta">
+          <div class="item"><span class="num">41</span><span class="lbl">Municipios ámbito</span></div>
+          <div class="item"><span class="num">99</span><span class="lbl">Promotores activos</span></div>
+          <div class="item"><span class="num">1,5 M€</span><span class="lbl">Certificado 2024</span></div>
+          <div class="item"><span class="num">38,8 %</span><span class="lbl">Marco 23-27</span></div>
+        </div>
+      </div>
+
+      <!-- Preview card (mini mock-up del visor) -->
+      <div class="preview-card" aria-hidden="true">
+        <div class="preview-card-head">
+          <div class="dot-row"><span></span><span></span><span></span></div>
+          <div class="url">mosaico.darwin/visor?gal=fadeta</div>
+        </div>
+        <div class="preview-card-body">
+          <aside class="preview-side">
+            <div class="label">Cartera LEADER</div>
+            <div class="row"><span class="sw" style="background:#6B8E4E"></span><span>Agroalimentario</span><span style="margin-left:auto" class="mono">22</span></div>
+            <div class="row"><span class="sw" style="background:#C97B3F"></span><span>Turismo rural</span><span style="margin-left:auto" class="mono">17</span></div>
+            <div class="row"><span class="sw" style="background:#4A7A8C"></span><span>Servicios</span><span style="margin-left:auto" class="mono">8</span></div>
+            <div class="row"><span class="sw" style="background:#8B5A8C"></span><span>Artesanía</span><span style="margin-left:auto" class="mono">5</span></div>
+            <div class="row"><span class="sw" style="background:#B8956A"></span><span>Patrimonio</span><span style="margin-left:auto" class="mono">5</span></div>
+            <div class="row"><span class="sw" style="background:#D4A04C"></span><span>Energía</span><span style="margin-left:auto" class="mono">4</span></div>
+            <div class="row"><span class="sw" style="background:#3E5C76"></span><span>Digitalización</span><span style="margin-left:auto" class="mono">4</span></div>
+
+            <div class="label">EDLP 23-27</div>
+            <div class="row" style="font-size:11px; color:var(--ink-3);">Ejecutado <strong style="color:var(--accent); margin-left:auto;">38,8 %</strong></div>
+            <div style="height:6px; background:#E5E9DD; border-radius:3px; overflow:hidden;">
+              <div style="height:100%; width:38.8%; background:var(--accent); border-radius:3px;"></div>
+            </div>
+          </aside>
+          <div class="preview-map">
+            <svg viewBox="0 0 460 360" preserveAspectRatio="none">
+              <!-- river curves (Tajuña + Tajo) -->
+              <path d="M40 60 Q140 120, 220 140 T420 220" stroke="#9CB7C9" stroke-width="2.5" fill="none" opacity="0.55"/>
+              <path d="M60 280 Q160 240, 260 270 T440 260" stroke="#9CB7C9" stroke-width="2" fill="none" opacity="0.45"/>
+              <!-- comarca outline (rough Alcarria shape) -->
+              <path d="M70 80 L130 60 L210 70 L290 50 L370 90 L420 160 L410 240 L350 300 L240 320 L140 300 L80 250 L60 170 Z"
+                    fill="rgba(45,90,61,0.05)" stroke="rgba(45,90,61,0.3)" stroke-width="1.5" stroke-dasharray="3 3"/>
+              <!-- municipality points (approx positions for Alcarria) -->
+              <g>
+                <!-- Brihuega (big) -->
+                <circle cx="170" cy="120" r="14" fill="#6B8E4E" opacity="0.85"/>
+                <circle cx="170" cy="120" r="14" fill="none" stroke="#fff" stroke-width="2"/>
+                <text x="170" y="125" text-anchor="middle" fill="#fff" font-size="11" font-weight="700" font-family="Inter">12</text>
+                <!-- Cifuentes -->
+                <circle cx="260" cy="105" r="10" fill="#C97B3F" opacity="0.85"/>
+                <circle cx="260" cy="105" r="10" fill="none" stroke="#fff" stroke-width="2"/>
+                <text x="260" y="109" text-anchor="middle" fill="#fff" font-size="10" font-weight="700" font-family="Inter">9</text>
+                <!-- Sacedón -->
+                <circle cx="220" cy="260" r="9" fill="#4A7A8C" opacity="0.85"/>
+                <circle cx="220" cy="260" r="9" fill="none" stroke="#fff" stroke-width="2"/>
+                <text x="220" y="264" text-anchor="middle" fill="#fff" font-size="10" font-weight="700" font-family="Inter">7</text>
+                <!-- Trillo -->
+                <circle cx="310" cy="170" r="8" fill="#D4A04C" opacity="0.85"/>
+                <!-- Pareja -->
+                <circle cx="290" cy="230" r="7" fill="#C97B3F" opacity="0.85"/>
+                <!-- Tendilla -->
+                <circle cx="115" cy="200" r="6" fill="#6B8E4E" opacity="0.85"/>
+                <!-- smaller -->
+                <circle cx="200" cy="180" r="5" fill="#8B5A8C" opacity="0.85"/>
+                <circle cx="240" cy="160" r="5" fill="#6B8E4E" opacity="0.85"/>
+                <circle cx="160" cy="240" r="4.5" fill="#B8956A" opacity="0.85"/>
+                <circle cx="330" cy="210" r="4.5" fill="#6B8E4E" opacity="0.85"/>
+                <circle cx="340" cy="270" r="4" fill="#C97B3F" opacity="0.85"/>
+                <circle cx="100" cy="150" r="3.5" fill="#3E5C76" opacity="0.85"/>
+                <circle cx="280" cy="80" r="3.5" fill="#6B8E4E" opacity="0.85"/>
+                <circle cx="380" cy="180" r="3.5" fill="#D4A04C" opacity="0.85"/>
+                <circle cx="370" cy="250" r="3" fill="#6B8E4E" opacity="0.85"/>
+                <circle cx="190" cy="280" r="3" fill="#C97B3F" opacity="0.85"/>
+                <circle cx="240" cy="220" r="3" fill="#6B8E4E" opacity="0.85"/>
+              </g>
+              <!-- highlight gap area -->
+              <ellipse cx="395" cy="125" rx="35" ry="22" fill="none" stroke="#C97B3F" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.7"/>
+              <text x="395" y="155" text-anchor="middle" font-family="Inter" font-size="9" font-weight="600" fill="#C97B3F" opacity="0.85">Cobertura baja</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =========== Problem =========== -->
+<section class="section problem" id="producto">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-eyebrow">El problema</div>
+      <h2 class="section-title">Tres semanas al año redactando memorias que ya sabes contar.</h2>
+      <p class="section-sub">Los Grupos de Acción Local gestionan estrategias multimillonarias con hojas de cálculo dispersas. Cada justificación, asamblea o nota de prensa empieza desde cero.</p>
+    </div>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h18"/></svg>
+        </div>
+        <h3>Datos atomizados</h3>
+        <p>Excel del seguimiento, GIS del técnico, memoria en Word, web pública. La misma cifra vive en cuatro sitios — y casi nunca coincide.</p>
+      </div>
+      <div class="problem-card">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <h3>Justificación reactiva</h3>
+        <p>Las memorias PEPAC se montan al final, cuando la Junta las pide. Mientras, no sabes en qué municipios o sectores te estás quedando corto.</p>
+      </div>
+      <div class="problem-card">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-6"/></svg>
+        </div>
+        <h3>Sin visión territorial</h3>
+        <p>Sabes los importes globales, pero no qué municipios concentran la ayuda, dónde quedan zonas en blanco ni qué sectores están infrarrepresentados.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========== Features =========== -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-eyebrow">Producto</div>
+      <h2 class="section-title">Una sola pantalla para gestionar, justificar y comunicar la EDLP.</h2>
+      <p class="section-sub">Mosaico no sustituye tu Excel — lo lee. Subes el listado de promotores y obtienes mapa, dashboard y memoria coherentes entre sí.</p>
+    </div>
+    <div class="features-grid">
+
+      <div class="feature">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 00-8 8c0 5.4 8 12 8 12s8-6.6 8-12a8 8 0 00-8-8z"/></svg>
+        </div>
+        <div>
+          <h3>Mapa de proyectos</h3>
+          <p>Cada promotor geolocalizado en su municipio, coloreado por sector. Ficha completa con beneficiario, línea, inversión, ayuda, estado y objetivo EDLP.</p>
+        </div>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l3-3 4 4 5-5 6 6"/><path d="M14 8h7v7"/></svg>
+        </div>
+        <div>
+          <h3>Cobertura territorial</h3>
+          <p>Heatmap de inversión por municipio y sector. Detecta automáticamente los huecos: municipios sin proyectos, sectores poco apoyados, líneas infrautilizadas.</p>
+        </div>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>
+        </div>
+        <div>
+          <h3>Memoria con un clic</h3>
+          <p>Genera memoria anual, nota de prensa o resumen para asamblea en PDF, con mapas, gráficas y tablas listas para imprimir y firmar.</p>
+        </div>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        </div>
+        <div>
+          <h3>Indicadores EDLP</h3>
+          <p>Cruce automático entre retos priorizados (despoblación, empleo joven, diversificación) y la cartera real de proyectos. Evidencias de cumplimiento listas.</p>
+        </div>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12c0 5-4 9-9 9s-9-4-9-9 4-9 9-9c2.5 0 4.8 1 6.5 2.7"/><path d="M21 3v6h-6"/></svg>
+        </div>
+        <div>
+          <h3>Sincronización con tu Excel</h3>
+          <p>Sigues trabajando tu fichero. Mosaico lo lee cada noche y refresca el visor. Cero migración, cero dolor de cambio de proceso.</p>
+        </div>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-12V5l-8-3-8 3v5c0 8 8 12 8 12z"/></svg>
+        </div>
+        <div>
+          <h3>Vista pública opcional</h3>
+          <p>Un subdominio público con el mapa de proyectos para la web de tu GAL. Comunicación institucional sin desarrollo ad-hoc.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =========== Demo banner =========== -->
+<section class="section section-tight">
+  <div class="container">
+    <div class="demo-banner">
+      <div>
+        <h2>Demo en vivo con datos de tu comarca.</h2>
+        <p>
+          Si gestionáis FADETA Tajo-Tajuña — esta demo está alimentada con vuestros 41 municipios,
+          el marco financiero real y una cartera de 99 promotores reconstruida sobre la ejecución pública de 2024.
+        </p>
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <a class="btn btn-primary" href="visor.html">
+            Abrir visor Tajo-Tajuña
+            <svg viewBox="0 0 20 20" fill="currentColor"><path d="M3 10a1 1 0 011-1h9.586L10.293 5.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414-1.414L13.586 11H4a1 1 0 01-1-1z"/></svg>
+          </a>
+          <a class="btn btn-ghost" href="memoria.html">Ver memoria auto-generada</a>
+        </div>
+      </div>
+      <div class="demo-banner-side">
+        <div class="mini"><span class="num">41</span> municipios cargados con coordenadas, población y superficie reales</div>
+        <div class="mini"><span class="num">65</span> proyectos de demo distribuidos sobre 7 sectores y 5 líneas</div>
+        <div class="mini"><span class="num">3</span> capas de contexto: Red Natura 2000, hidrografía Tajo-Tajuña, despoblación</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========== Cómo funciona =========== -->
+<section class="section" id="como-funciona">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-eyebrow">Cómo funciona</div>
+      <h2 class="section-title">En tres pasos, sin migrar nada.</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="num">1</div>
+        <h3>Conectamos tu seguimiento</h3>
+        <p>Nos pasas tu Excel/CSV de promotores. Lo mapeamos a la EDLP — municipio, sector, línea, importes — sin cambiar tu forma de trabajar.</p>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <h3>Cargamos tu territorio</h3>
+        <p>Polígonos municipales, Red Natura 2000, masas de agua, despoblación. Todo precargado para tu comarca, listo el primer día.</p>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <h3>Genera memoria y comunica</h3>
+        <p>Mapa interno, vista pública para tu web, exportación de memoria anual. Configurable en una mañana de onboarding.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========== Pricing =========== -->
+<section class="section problem" id="precios">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-eyebrow">Precios</div>
+      <h2 class="section-title">Pensado para Grupos de Acción Local.</h2>
+      <p class="section-sub">Suscripción anual. Setup único de 1.500€ incluye carga de datos, formación al equipo y configuración de la vista pública.</p>
+    </div>
+    <div class="pricing-grid">
+
+      <div class="price">
+        <h3>GAL Pequeño</h3>
+        <p class="desc">Hasta 30 municipios y 1 técnico de seguimiento.</p>
+        <div class="price-amt">290€<span class="per">/mes</span></div>
+        <ul>
+          <li>Visor interno de proyectos</li>
+          <li>Dashboard EDLP</li>
+          <li>Memoria anual auto-generada</li>
+          <li>2 capas de contexto territorial</li>
+          <li>Soporte por email</li>
+        </ul>
+        <a class="btn btn-ghost" href="visor.html">Probar demo</a>
+      </div>
+
+      <div class="price featured">
+        <h3>GAL Comarca</h3>
+        <p class="desc">31-80 municipios, equipo de hasta 5 técnicos.</p>
+        <div class="price-amt">490€<span class="per">/mes</span></div>
+        <ul>
+          <li>Todo lo de GAL Pequeño</li>
+          <li>Vista pública en subdominio propio</li>
+          <li>Hasta 6 capas de contexto + WMS propios</li>
+          <li>Memorias por línea de ayuda y sector</li>
+          <li>Detección automática de huecos territoriales</li>
+          <li>Soporte prioritario</li>
+        </ul>
+        <a class="btn btn-primary" href="visor.html">Empezar piloto</a>
+      </div>
+
+      <div class="price">
+        <h3>Provincial / Multi-GAL</h3>
+        <p class="desc">Diputaciones, redes de GAL, autoridades de gestión.</p>
+        <div class="price-amt">890€<span class="per">/mes</span></div>
+        <ul>
+          <li>Multi-tenant: agrega varios GAL</li>
+          <li>API de integración con sistemas Junta</li>
+          <li>Capa de evaluación inter-comarcal</li>
+          <li>Memorias de la red completa</li>
+          <li>SLA y account manager</li>
+        </ul>
+        <a class="btn btn-ghost" href="mailto:mario.peces@darwingeospatial.com">Hablar con ventas</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =========== Footer =========== -->
+<footer class="footer">
+  <div class="container">
+    <div class="col" style="max-width:300px;">
+      <a class="brand" href="./" style="margin-bottom:8px;">
+        <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l9-5 9 5"/><path d="M3 12l9-5 9 5"/><path d="M3 7l9-5 9 5"/></svg></span>
+        <span class="brand-name">Mosaico</span>
+      </a>
+      <p>Seguimiento territorial LEADER y EDLP para Grupos de Acción Local. Por Darwin Geospatial.</p>
+    </div>
+    <div class="col">
+      <span class="col-title">Producto</span>
+      <a href="visor.html">Visor en vivo</a>
+      <a href="memoria.html">Memoria auto-generada</a>
+      <a href="#precios">Precios</a>
+    </div>
+    <div class="col">
+      <span class="col-title">Compañía</span>
+      <a href="https://darwingeospatial.com" target="_blank" rel="noopener">Darwin Geospatial</a>
+      <a href="mailto:mario.peces@darwingeospatial.com">mario.peces@darwingeospatial.com</a>
+      <a href="tel:+34633232735">+34 633 232 735</a>
+    </div>
+    <div class="col">
+      <span class="col-title">Recursos</span>
+      <a href="https://fadeta.es" target="_blank" rel="noopener">FADETA Tajo-Tajuña</a>
+      <a href="https://www.castillalamancha.es" target="_blank" rel="noopener">PEPAC 2023-2027 CLM</a>
+      <a href="https://www.recamder.es" target="_blank" rel="noopener">RECAMDER</a>
+    </div>
+  </div>
+  <div class="container" style="margin-top:32px; padding-top:24px; border-top:1px solid var(--border); font-size:12px;">
+    <span>© 2026 Darwin Geospatial. Demo con datos públicos de FADETA Tajo-Tajuña. Proyectos LEADER simulados con fines comerciales.</span>
+  </div>
+</footer>
+
+</body>
+</html>

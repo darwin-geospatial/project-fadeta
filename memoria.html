@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Memoria EDLP 2024 · FADETA Tajo-Tajuña — generada por Mosaico</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232D5A3D'/><path d='M9 22V13l7-4 7 4v9' stroke='white' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/><circle cx='16' cy='17' r='2.2' fill='white'/></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/main.css" />
+<style>
+  body { background: #EAECE7; }
+  .page-toolbar {
+    position: sticky; top: 0; z-index: 30;
+    background: #fff; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 20px;
+  }
+  .page-toolbar .brand { font-size: var(--fs-14); }
+  .doc-shell { padding: 32px 16px 80px; }
+  .doc {
+    max-width: 880px; margin: 0 auto;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 12px 36px rgba(0,0,0,.10);
+    padding: 64px 72px;
+    border-radius: 4px;
+  }
+  .doc-meta {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 14px;
+    margin-bottom: 28px;
+  }
+  .doc-meta .left .kicker {
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); font-weight: 600;
+  }
+  .doc-meta h1 {
+    font-size: 28px; line-height: 1.15; letter-spacing: -0.02em;
+    margin-top: 6px; max-width: 540px;
+  }
+  .doc-meta .right { text-align: right; font-size: 11px; color: var(--ink-3); }
+  .doc-meta .right .gen {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--accent-soft); color: var(--accent-ink);
+    padding: 4px 8px; border-radius: var(--r-pill);
+    font-size: 11px; font-weight: 500; margin-bottom: 6px;
+  }
+  .doc-meta .right .gen .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+
+  .doc h2 {
+    font-size: 18px; margin: 36px 0 14px;
+    letter-spacing: -0.012em;
+    padding-bottom: 6px; border-bottom: 1px solid var(--border);
+    color: var(--ink);
+  }
+  .doc h2 .num {
+    display: inline-block;
+    width: 22px; text-align: right;
+    color: var(--accent); margin-right: 8px;
+    font-variant-numeric: tabular-nums;
+  }
+  .doc p { font-size: 14px; line-height: 1.6; color: var(--ink-2); margin: 8px 0; }
+
+  /* Executive summary KPIs */
+  .exec-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 18px 0 8px;
+  }
+  .exec-kpi {
+    border: 1px solid var(--border);
+    border-radius: var(--r-2);
+    padding: 12px 14px;
+    background: var(--bg-soft);
+  }
+  .exec-kpi .lbl {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--ink-3); font-weight: 600;
+  }
+  .exec-kpi .v {
+    font-size: 22px; font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+    margin-top: 4px;
+  }
+  .exec-kpi .v .u {
+    font-size: 13px; font-weight: 500; color: var(--ink-3); margin-left: 2px;
+  }
+  .exec-kpi .sub {
+    font-size: 11px; color: var(--ink-3); margin-top: 2px;
+  }
+
+  /* Map figure */
+  .figure {
+    margin: 14px 0;
+    border: 1px solid var(--border);
+    border-radius: var(--r-2);
+    overflow: hidden;
+  }
+  .figure .caption {
+    font-size: 11px; color: var(--ink-3);
+    padding: 8px 12px; border-top: 1px solid var(--border);
+    background: var(--bg-soft);
+  }
+  .figure svg { width: 100%; height: 380px; background: #F1F4EE; display: block; }
+
+  /* Table */
+  table.t {
+    width: 100%; border-collapse: collapse; font-size: 13px;
+    margin: 12px 0;
+  }
+  table.t th {
+    text-align: left;
+    background: var(--bg-soft);
+    padding: 8px 10px;
+    font-weight: 600;
+    font-size: 11px;
+    color: var(--ink-3);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--border);
+  }
+  table.t td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  table.t td.r { text-align: right; }
+  table.t tr:last-child td { border-bottom: none; }
+
+  /* Bar mini */
+  .bar-mini {
+    width: 100%; background: var(--bg-soft); height: 14px;
+    border-radius: 3px; overflow: hidden;
+  }
+  .bar-mini > div { height: 100%; border-radius: 3px; }
+
+  /* Coverage note */
+  .alert {
+    margin: 12px 0;
+    padding: 12px 14px;
+    border-left: 3px solid #C97B3F;
+    background: #FBF1E7;
+    font-size: 13px;
+    color: #6A4F0E;
+    border-radius: 0 var(--r-2) var(--r-2) 0;
+    line-height: 1.55;
+  }
+  .alert strong { color: #4A3508; }
+
+  /* Reto evidence cards */
+  .retos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .reto {
+    border: 1px solid var(--border);
+    border-radius: var(--r-2);
+    padding: 14px;
+    background: var(--bg-soft);
+  }
+  .reto .h {
+    font-size: 13px; font-weight: 600; color: var(--ink);
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 4px;
+  }
+  .reto .h .n {
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--accent);
+  }
+  .reto .e { font-size: 12px; color: var(--ink-2); line-height: 1.5; }
+  .reto .e b { color: var(--ink); }
+
+  /* Doc footer */
+  .doc-foot {
+    margin-top: 40px; padding-top: 16px;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between;
+    font-size: 11px; color: var(--ink-3);
+  }
+  .doc-foot .gen-by {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--ink-2);
+  }
+  .doc-foot .gen-by .m {
+    width: 18px; height: 18px; border-radius: 4px; background: var(--accent);
+    display: inline-grid; place-items: center; color: #fff;
+  }
+
+  /* Print */
+  @media print {
+    body { background: #fff; }
+    .page-toolbar { display: none; }
+    .doc-shell { padding: 0; }
+    .doc { box-shadow: none; max-width: none; margin: 0; padding: 24mm 18mm; border-radius: 0; }
+    .figure svg { height: 280px; }
+  }
+
+  @media (max-width: 760px) {
+    .doc { padding: 32px 22px; }
+    .exec-grid { grid-template-columns: repeat(2, 1fr); }
+    .retos { grid-template-columns: 1fr; }
+    .doc-meta { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .doc-meta .right { text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<header class="page-toolbar">
+  <div style="display:flex; align-items:center; gap:14px;">
+    <a class="brand" href="./">
+      <span class="brand-mark" style="width:24px;height:24px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l9-5 9 5"/><path d="M3 12l9-5 9 5"/><path d="M3 7l9-5 9 5"/></svg>
+      </span>
+      <span class="brand-name">Mosaico</span>
+    </a>
+    <span class="pill"><span class="pill-dot"></span> Memoria auto-generada</span>
+  </div>
+  <div style="display:flex; gap:8px;">
+    <a class="btn btn-ghost btn-sm" href="visor.html">
+      <svg viewBox="0 0 20 20" fill="currentColor"><path d="M17 10a1 1 0 01-1 1H6.414l3.293 3.293a1 1 0 01-1.414 1.414l-5-5a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 011 1z"/></svg>
+      Volver al visor
+    </a>
+    <button class="btn btn-primary btn-sm" onclick="window.print()">
+      <svg viewBox="0 0 20 20" fill="currentColor"><path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v3h-2V4H7v3H5V4zM4 9a1 1 0 00-1 1v5a1 1 0 001 1h1v1a2 2 0 002 2h6a2 2 0 002-2v-1h1a1 1 0 001-1v-5a1 1 0 00-1-1H4zm3 6h6v3H7v-3z"/></svg>
+      Descargar PDF
+    </button>
+  </div>
+</header>
+
+<div class="doc-shell">
+  <article class="doc" id="doc">
+    <!-- Header -->
+    <header class="doc-meta">
+      <div class="left">
+        <div class="kicker">EDLP 2023-2027 · Memoria de ejecución</div>
+        <h1>Estado de la intervención LEADER en la comarca Tajo-Tajuña</h1>
+        <p style="font-size:13px; color:var(--ink-3); margin-top:8px;">
+          Federación de Asociaciones para el Desarrollo Territorial del Tajo-Tajuña (FADETA) · PEPAC 2023-2027 Castilla-La Mancha
+        </p>
+      </div>
+      <div class="right">
+        <div class="gen"><span class="dot"></span> Generado automáticamente</div>
+        <div><strong style="color:var(--ink);">Periodo:</strong> ene-dic 2024</div>
+        <div id="fecha-gen"></div>
+        <div style="margin-top:4px;"><strong style="color:var(--ink);">Documento</strong> · MOS-FDT-2024-001</div>
+      </div>
+    </header>
+
+    <p style="margin-bottom:18px;">
+      El presente informe sintetiza la ejecución de la <strong>Estrategia de Desarrollo Local Participativo 2023-2027</strong> de FADETA durante el ejercicio 2024.
+      Los datos proceden del seguimiento interno de la federación y se cruzan automáticamente con la base territorial de los 41 municipios del ámbito,
+      los retos priorizados en el proceso participativo de la EDLP y el marco financiero LEADER asignado por la Junta de Castilla-La Mancha.
+    </p>
+
+    <!-- 1. Resumen ejecutivo -->
+    <h2><span class="num">1.</span>Resumen ejecutivo</h2>
+    <div class="exec-grid">
+      <div class="exec-kpi"><div class="lbl">Promotores</div><div class="v" id="exec-prom">—</div><div class="sub" id="exec-prom-sub">— sectores</div></div>
+      <div class="exec-kpi"><div class="lbl">Inversión movilizada</div><div class="v" id="exec-inv">—</div><div class="sub">Pública + privada</div></div>
+      <div class="exec-kpi"><div class="lbl">Ayuda certificada</div><div class="v" id="exec-ayu">—</div><div class="sub" id="exec-pct">— % marco 23-27</div></div>
+      <div class="exec-kpi"><div class="lbl">Empleos generados</div><div class="v" id="exec-emp">—</div><div class="sub">Creados o consolidados</div></div>
+    </div>
+
+    <p id="exec-narrative">Cargando datos...</p>
+
+    <!-- 2. Distribución territorial -->
+    <h2><span class="num">2.</span>Distribución territorial de los proyectos</h2>
+    <p>La cartera de 2024 se distribuye sobre los 41 municipios del ámbito FADETA según se muestra a continuación. El tamaño del símbolo es proporcional a la inversión total movilizada en cada municipio; el color refleja el sector predominante.</p>
+
+    <div class="figure">
+      <svg id="memoria-map" viewBox="0 0 800 380" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="caption">Figura 1 · Distribución espacial de la cartera LEADER 2024 sobre la comarca FADETA Tajo-Tajuña. Base cartográfica simplificada; coordenadas reales por centroide municipal.</div>
+    </div>
+
+    <!-- 3. Por sectores -->
+    <h2><span class="num">3.</span>Sectores apoyados</h2>
+    <p>La distribución por sector productivo muestra el alineamiento de la cartera con los ejes prioritarios de la EDLP — diversificación económica, agroalimentario y turismo rural — y permite identificar líneas donde la convocatoria absorbe menor demanda.</p>
+
+    <table class="t" id="tbl-sectores">
+      <thead><tr><th>Sector</th><th>Proyectos</th><th>Inversión</th><th>Ayuda</th><th style="width:160px;">Peso ayuda</th></tr></thead>
+      <tbody></tbody>
+    </table>
+
+    <!-- 4. Cobertura -->
+    <h2><span class="num">4.</span>Análisis de cobertura territorial</h2>
+    <p id="cobertura-narrative">Cargando datos...</p>
+    <div class="alert" id="cobertura-alert"></div>
+
+    <h3 style="font-size:13px; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink-3); margin-top:18px; margin-bottom:8px;">Top 10 municipios por ayuda recibida</h3>
+    <table class="t" id="tbl-municipios">
+      <thead><tr><th>Municipio</th><th class="r">Población</th><th class="r">Proyectos</th><th class="r">Inversión</th><th class="r">Ayuda</th></tr></thead>
+      <tbody></tbody>
+    </table>
+
+    <!-- 5. Retos -->
+    <h2><span class="num">5.</span>Evidencias de cumplimiento de la EDLP</h2>
+    <p>Asignación de la cartera de proyectos 2024 a cada uno de los cinco retos priorizados en el proceso participativo de la EDLP 2023-2027.</p>
+
+    <div class="retos" id="retos-grid"></div>
+
+    <!-- 6. Conclusiones -->
+    <h2><span class="num">6.</span>Conclusiones y recomendaciones</h2>
+    <p id="conclusiones">Cargando datos...</p>
+
+    <!-- Footer -->
+    <div class="doc-foot">
+      <div>
+        Fuentes: seguimiento interno FADETA · EDLP 23-27 · marco PEPAC CLM · IGN · INE.
+      </div>
+      <div class="gen-by">
+        <span class="m"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M3 17l9-5 9 5"/><path d="M3 7l9-5 9 5"/></svg></span>
+        Generado por Mosaico · Darwin Geospatial
+      </div>
+    </div>
+  </article>
+</div>
+
+<script>
+const fmtEur = n => new Intl.NumberFormat('es-ES', { style:'currency', currency:'EUR', maximumFractionDigits:0 }).format(n);
+const fmtEurS = n => n >= 1e6 ? (n/1e6).toLocaleString('es-ES',{maximumFractionDigits:2})+' M€'
+                              : Math.round(n/1000)+' k€';
+const fmtNum = n => new Intl.NumberFormat('es-ES').format(n);
+const fmtPct = n => new Intl.NumberFormat('es-ES',{maximumFractionDigits:1}).format(n)+' %';
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+(async function(){
+  const [mRes, eRes, pRes] = await Promise.all([
+    fetch('data/municipios.json'), fetch('data/edlp.json'), fetch('data/proyectos.json')
+  ]);
+  const m = await mRes.json(), e = await eRes.json(), p = await pRes.json();
+  const municipios = m.municipios;
+  const proyectos = p.proyectos;
+  const munById = new Map(municipios.map(mu => [mu.ine, mu]));
+  const sectorById = new Map(e.sectores.map(s => [s.id, s]));
+
+  // Date
+  const now = new Date();
+  document.getElementById('fecha-gen').innerHTML = '<strong style="color:var(--ink);">Emitido:</strong> ' +
+    now.toLocaleDateString('es-ES', { year:'numeric', month:'long', day:'numeric' });
+
+  // KPIs
+  const totals = proyectos.reduce((acc, x) => {
+    acc.inv += x.inversion; acc.ayu += x.ayuda; acc.emp += x.empleos;
+    if (x.estado === 'ejecutado' || x.estado === 'justificado') {
+      acc.ayuCert += x.ayuda; acc.invCert += x.inversion;
+    }
+    return acc;
+  }, { inv:0, ayu:0, emp:0, ayuCert:0, invCert:0 });
+  const sectoresUsados = new Set(proyectos.map(x => x.sector)).size;
+  const pctMarco = (totals.ayuCert / e._meta.presupuesto_total_eur) * 100;
+  document.getElementById('exec-prom').textContent = proyectos.length;
+  document.getElementById('exec-prom-sub').textContent = sectoresUsados + ' sectores activos';
+  document.getElementById('exec-inv').innerHTML = (totals.inv/1e6).toLocaleString('es-ES',{maximumFractionDigits:2}) + '<span class="u"> M€</span>';
+  document.getElementById('exec-ayu').innerHTML = (totals.ayuCert/1e6).toLocaleString('es-ES',{maximumFractionDigits:2}) + '<span class="u"> M€</span>';
+  document.getElementById('exec-pct').textContent = fmtPct(pctMarco) + ' marco 23-27';
+  document.getElementById('exec-emp').textContent = totals.emp;
+
+  // narrative
+  const ejecutados = proyectos.filter(x => x.estado === 'ejecutado' || x.estado === 'justificado').length;
+  document.getElementById('exec-narrative').innerHTML =
+    `Durante el ejercicio se han movilizado <strong>${fmtEur(totals.inv)}</strong> de inversión total comprometida, con <strong>${fmtEur(totals.ayuCert)}</strong> de ayuda LEADER ya certificada (estados ejecutado y justificado), lo que representa el <strong>${fmtPct(pctMarco)}</strong> del marco financiero asignado a FADETA (3,8 M€) para el periodo 2023-2027. La cartera incluye <strong>${proyectos.length} promotores</strong> activos, de los cuales <strong>${ejecutados}</strong> han completado ejecución y/o justificación, generando <strong>${totals.emp} empleos</strong> creados o consolidados en la comarca.`;
+
+  // Map figure
+  renderMemoriaMap(municipios, proyectos, m._meta.bbox);
+
+  // Sector table
+  const bySec = {};
+  proyectos.forEach(x => {
+    if (!bySec[x.sector]) bySec[x.sector] = { count:0, inv:0, ayu:0 };
+    bySec[x.sector].count++; bySec[x.sector].inv += x.inversion; bySec[x.sector].ayu += x.ayuda;
+  });
+  const maxAyu = Math.max(...Object.values(bySec).map(o => o.ayu));
+  const tbS = document.querySelector('#tbl-sectores tbody');
+  e.sectores
+    .map(s => [s, bySec[s.id] || { count:0, inv:0, ayu:0 }])
+    .sort((a,b) => b[1].ayu - a[1].ayu)
+    .forEach(([s, agg]) => {
+      tbS.insertAdjacentHTML('beforeend', `
+        <tr>
+          <td><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:${s.color}; margin-right:6px;"></span>${esc(s.nombre)}</td>
+          <td class="r">${agg.count}</td>
+          <td class="r">${fmtEur(agg.inv)}</td>
+          <td class="r">${fmtEur(agg.ayu)}</td>
+          <td><div class="bar-mini"><div style="width:${(agg.ayu/maxAyu)*100}%; background:${s.color}"></div></div></td>
+        </tr>`);
+    });
+
+  // Cobertura
+  const byMun = new Map();
+  proyectos.forEach(x => {
+    const cur = byMun.get(x.municipio_ine) || { count:0, inv:0, ayu:0 };
+    cur.count++; cur.inv += x.inversion; cur.ayu += x.ayuda;
+    byMun.set(x.municipio_ine, cur);
+  });
+  const sinProyectos = municipios.filter(mu => !byMun.has(mu.ine));
+  const pctCubiertos = ((municipios.length - sinProyectos.length) / municipios.length) * 100;
+  document.getElementById('cobertura-narrative').innerHTML =
+    `De los <strong>${municipios.length} municipios</strong> del ámbito, <strong>${municipios.length - sinProyectos.length}</strong> han recibido al menos un proyecto LEADER en 2024 (<strong>${fmtPct(pctCubiertos)}</strong> del territorio). La concentración de la inversión muestra un patrón polarizado: las cabeceras comarcales (Brihuega, Cifuentes, Sacedón, Trillo) absorben un porcentaje significativo de la ayuda total, lo que es coherente con su masa empresarial pero exige reforzar la captación en municipios menores.`;
+
+  const sinPnames = sinProyectos.slice(0, 6).map(x => x.nombre).join(', ');
+  const tail = sinProyectos.length > 6 ? ` y ${sinProyectos.length - 6} más` : '';
+  document.getElementById('cobertura-alert').innerHTML =
+    `<strong>Acción recomendada:</strong> ${sinProyectos.length} municipios no han registrado proyectos LEADER en 2024 — entre ellos ${esc(sinPnames)}${tail}. Se sugiere convocatoria de animación específica en estos núcleos para el ejercicio 2025, priorizando proyectos de servicios básicos y diversificación económica.`;
+
+  // Top 10 municipios
+  const tbM = document.querySelector('#tbl-municipios tbody');
+  [...byMun.entries()]
+    .map(([ine, agg]) => [munById.get(ine), agg])
+    .sort((a,b) => b[1].ayu - a[1].ayu)
+    .slice(0, 10)
+    .forEach(([mu, agg]) => {
+      tbM.insertAdjacentHTML('beforeend', `
+        <tr>
+          <td><strong>${esc(mu.nombre)}</strong> <span style="color:var(--ink-3); font-size:11px;">· ${esc(mu.rasgo)}</span></td>
+          <td class="r">${fmtNum(mu.poblacion)}</td>
+          <td class="r">${agg.count}</td>
+          <td class="r">${fmtEur(agg.inv)}</td>
+          <td class="r"><strong>${fmtEur(agg.ayu)}</strong></td>
+        </tr>`);
+    });
+
+  // Retos
+  const byReto = {};
+  proyectos.forEach(x => {
+    if (!byReto[x.objetivo_edlp]) byReto[x.objetivo_edlp] = { count:0, inv:0, ayu:0, emp:0, ejemplo:'' };
+    byReto[x.objetivo_edlp].count++;
+    byReto[x.objetivo_edlp].inv += x.inversion;
+    byReto[x.objetivo_edlp].ayu += x.ayuda;
+    byReto[x.objetivo_edlp].emp += x.empleos;
+    if (!byReto[x.objetivo_edlp].ejemplo) byReto[x.objetivo_edlp].ejemplo = x.promotor;
+  });
+  const elR = document.getElementById('retos-grid');
+  e.retos_priorizados.forEach(r => {
+    const agg = byReto[r.id] || { count:0, inv:0, ayu:0, emp:0, ejemplo:'sin proyectos' };
+    elR.insertAdjacentHTML('beforeend', `
+      <div class="reto">
+        <div class="h"><span>${esc(r.nombre)}</span><span class="n">${r.id} · ${r.peso_diagnostico_pct}%</span></div>
+        <div class="e">
+          <b>${agg.count} proyectos</b> · ${fmtEurS(agg.ayu)} de ayuda · ${agg.emp} empleos.<br>
+          Ejemplo: <span style="color:var(--ink);">${esc(agg.ejemplo)}</span>
+        </div>
+      </div>`);
+  });
+
+  // Conclusiones
+  const sorted = Object.entries(bySec).sort((a,b) => b[1].ayu - a[1].ayu);
+  const sectorTop = sectorById.get(sorted[0][0])?.nombre;
+  document.getElementById('conclusiones').innerHTML =
+    `La ejecución 2024 confirma el alineamiento de la cartera con los retos priorizados en la EDLP — especialmente la <strong>diversificación económica</strong> y el <strong>empleo joven y de mujer</strong>. ` +
+    `El sector con mayor peso en ayuda concedida ha sido <strong>${esc(sectorTop)}</strong>, en línea con la estrategia productiva de la comarca. ` +
+    `La principal área de mejora detectada es la <strong>cobertura territorial</strong>: ${sinProyectos.length} municipios han quedado fuera de la convocatoria 2024, lo que aconseja una línea de animación específica en 2025. ` +
+    `Con un <strong>${fmtPct(pctMarco)}</strong> del marco financiero ejecutado, el ritmo de absorción es coherente con la senda comprometida con la Junta de Castilla-La Mancha para el periodo.`;
+})();
+
+// ---- Map figure (SVG renderer) ----
+function renderMemoriaMap(municipios, proyectos, bbox) {
+  const W = 800, H = 380, pad = 30;
+  const [minLon, minLat, maxLon, maxLat] = bbox;
+  const aspectGeo = (maxLon - minLon) / (maxLat - minLat) * Math.cos((minLat+maxLat)/2 * Math.PI/180);
+  const innerW = W - pad*2, innerH = H - pad*2;
+  const proj = (lon, lat) => {
+    const x = pad + (lon - minLon) / (maxLon - minLon) * innerW;
+    const y = pad + (1 - (lat - minLat) / (maxLat - minLat)) * innerH;
+    return [x, y];
+  };
+
+  const aggByMun = new Map();
+  proyectos.forEach(p => {
+    const cur = aggByMun.get(p.municipio_ine) || { count:0, inv:0, secs:{} };
+    cur.count++; cur.inv += p.inversion;
+    cur.secs[p.sector] = (cur.secs[p.sector] || 0) + p.inversion;
+    aggByMun.set(p.municipio_ine, cur);
+  });
+
+  const sectorColor = { agroalimentario:'#6B8E4E', turismo:'#C97B3F', artesania:'#8B5A8C', servicios:'#4A7A8C', patrimonio:'#B8956A', digitalizacion:'#3E5C76', energia:'#D4A04C' };
+  const maxInv = Math.max(1, ...[...aggByMun.values()].map(o => o.inv));
+
+  const svg = document.getElementById('memoria-map');
+  let html = '';
+
+  // Decorative comarca outline (rough)
+  const outline = [
+    [-3.10, 40.95], [-2.55, 40.94], [-2.40, 40.78], [-2.45, 40.55], [-2.55, 40.45], [-2.95, 40.43], [-3.10, 40.62]
+  ].map(c => proj(c[0], c[1]).join(',')).join(' ');
+  html += `<polygon points="${outline}" fill="rgba(45,90,61,0.04)" stroke="rgba(45,90,61,0.25)" stroke-width="1.2" stroke-dasharray="4 3"/>`;
+
+  // Rivers
+  const tajuna = [
+    [-2.50, 40.78], [-2.6262, 40.7872], [-2.7411, 40.7411], [-2.8694, 40.7603],
+    [-2.9447, 40.6175], [-2.9853, 40.6028], [-3.044, 40.6353], [-3.10, 40.62]
+  ].map(c => proj(c[0], c[1]).join(',')).join(' ');
+  const tajo = [
+    [-2.40, 40.78], [-2.5917, 40.7000], [-2.7194, 40.6325], [-2.7311, 40.4856], [-2.8181, 40.4853], [-2.97, 40.41]
+  ].map(c => proj(c[0], c[1]).join(',')).join(' ');
+  html += `<polyline points="${tajuna}" fill="none" stroke="#9CB7C9" stroke-width="1.8" opacity="0.7"/>`;
+  html += `<polyline points="${tajo}" fill="none" stroke="#9CB7C9" stroke-width="2" opacity="0.7"/>`;
+
+  // Municipios as small dots
+  municipios.forEach(mu => {
+    const [x, y] = proj(mu.lon, mu.lat);
+    const agg = aggByMun.get(mu.ine);
+    if (agg) {
+      // pick dominant sector
+      let dom = 'agroalimentario', max = 0;
+      for (const k in agg.secs) if (agg.secs[k] > max) { max = agg.secs[k]; dom = k; }
+      const r = 4 + (agg.inv / maxInv) * 18;
+      html += `<circle cx="${x}" cy="${y}" r="${r}" fill="${sectorColor[dom]}" fill-opacity="0.78" stroke="#fff" stroke-width="1.5"/>`;
+      if (agg.count >= 3) {
+        html += `<text x="${x}" y="${y+3}" text-anchor="middle" font-family="Inter" font-size="9.5" font-weight="700" fill="#fff">${agg.count}</text>`;
+      }
+    } else {
+      html += `<circle cx="${x}" cy="${y}" r="2.5" fill="#C97B3F" fill-opacity="0.7" stroke="#fff" stroke-width="1"/>`;
+    }
+  });
+
+  // Top muni labels
+  const labelled = ['19053','19083','19243','19279','19215'];
+  municipios.filter(mu => labelled.includes(mu.ine)).forEach(mu => {
+    const [x, y] = proj(mu.lon, mu.lat);
+    html += `<text x="${x}" y="${y - 16}" text-anchor="middle" font-family="Inter" font-size="10" font-weight="600" fill="#1B1F1A" stroke="#fff" stroke-width="3" paint-order="stroke">${mu.nombre}</text>`;
+  });
+
+  // Legend
+  const legX = W - 200, legY = 20;
+  html += `<g transform="translate(${legX},${legY})">
+    <rect width="180" height="120" rx="4" fill="#fff" stroke="#E3E5DF"/>
+    <text x="10" y="18" font-family="Inter" font-size="9.5" font-weight="700" fill="#777" letter-spacing="0.5">SECTOR DOMINANTE</text>`;
+  let yy = 32;
+  for (const k of ['agroalimentario','turismo','servicios','artesania','patrimonio','digitalizacion','energia']) {
+    const name = ({agroalimentario:'Agroalimentario',turismo:'Turismo',servicios:'Servicios',artesania:'Artesanía',patrimonio:'Patrimonio',digitalizacion:'Digital',energia:'Energía'})[k];
+    html += `<circle cx="18" cy="${yy}" r="4" fill="${sectorColor[k]}"/><text x="28" y="${yy+3}" font-family="Inter" font-size="10" fill="#4A5048">${name}</text>`;
+    yy += 13;
+  }
+  html += `</g>`;
+
+  // Sin-proyecto marker note
+  html += `<g transform="translate(20, ${H-30})">
+    <circle cx="6" cy="6" r="3.5" fill="#C97B3F" stroke="#fff" stroke-width="1"/>
+    <text x="16" y="9" font-family="Inter" font-size="10" fill="#4A5048">Municipios sin proyecto LEADER 2024</text>
+  </g>`;
+
+  svg.innerHTML = html;
+}
+</script>
+
+</body>
+</html>

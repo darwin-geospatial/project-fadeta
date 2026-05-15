@@ -1,0 +1,43 @@
+{
+  "_meta": {
+    "estrategia": "Estrategia de Desarrollo Local Participativo (EDLP) FADETA 2023-2027",
+    "marco": "PEPAC 2023-2027 · Intervención LEADER",
+    "ambito": "Comarca Tajo-Tajuña, Guadalajara",
+    "presupuesto_total_eur": 3800000,
+    "ejecutado_eur": 1500000,
+    "porcentaje_ejecucion": 38.82,
+    "promotores": 99,
+    "empleos_creados": 90,
+    "fuente": "EDLP FADETA 2023-2027 + nota de ejecución diciembre 2025."
+  },
+  "retos_priorizados": [
+    { "id": "R1", "nombre": "Despoblación",                  "peso_diagnostico_pct": 91.0 },
+    { "id": "R2", "nombre": "Empleo joven y mujer",          "peso_diagnostico_pct": 81.4 },
+    { "id": "R3", "nombre": "Movilidad y servicios básicos", "peso_diagnostico_pct": 74.5 },
+    { "id": "R4", "nombre": "Cultura emprendedora",          "peso_diagnostico_pct": 51.7 },
+    { "id": "R5", "nombre": "Diversificación económica",     "peso_diagnostico_pct": 48.3 }
+  ],
+  "lineas_ayuda": [
+    { "id": "L1", "nombre": "Creación de empresas",                  "intensidad_max_pct": 45 },
+    { "id": "L2", "nombre": "Modernización y ampliación empresarial","intensidad_max_pct": 45 },
+    { "id": "L3", "nombre": "Rehabilitación de patrimonio histórico","intensidad_max_pct": 70 },
+    { "id": "L4", "nombre": "Cooperación inter-GAL",                 "intensidad_max_pct": 90 },
+    { "id": "L5", "nombre": "Animación y promoción turística",       "intensidad_max_pct": 60 }
+  ],
+  "sectores": [
+    { "id": "agroalimentario", "nombre": "Agroalimentario", "color": "#6B8E4E" },
+    { "id": "turismo",         "nombre": "Turismo rural",   "color": "#C97B3F" },
+    { "id": "artesania",       "nombre": "Artesanía",       "color": "#8B5A8C" },
+    { "id": "servicios",       "nombre": "Servicios",       "color": "#4A7A8C" },
+    { "id": "patrimonio",      "nombre": "Patrimonio",      "color": "#B8956A" },
+    { "id": "digitalizacion",  "nombre": "Digitalización",  "color": "#3E5C76" },
+    { "id": "energia",         "nombre": "Energía renovable","color": "#D4A04C" }
+  ],
+  "estados": [
+    { "id": "solicitado",   "nombre": "Solicitado",   "color": "#A0A0A0" },
+    { "id": "aprobado",     "nombre": "Aprobado",     "color": "#4A7A8C" },
+    { "id": "ejecucion",    "nombre": "En ejecución", "color": "#D4A04C" },
+    { "id": "ejecutado",    "nombre": "Ejecutado",    "color": "#6B8E4E" },
+    { "id": "justificado",  "nombre": "Justificado",  "color": "#2D5A3D" }
+  ]
+}

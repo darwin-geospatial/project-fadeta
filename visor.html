@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mosaico · Visor FADETA Tajo-Tajuña</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232D5A3D'/><path d='M9 22V13l7-4 7 4v9' stroke='white' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/><circle cx='16' cy='17' r='2.2' fill='white'/></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />
+<script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
+
+<link rel="stylesheet" href="assets/css/main.css" />
+<link rel="stylesheet" href="assets/css/visor.css" />
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ============== Top bar ============== -->
+  <header class="app-topbar">
+    <div class="left">
+      <a class="brand" href="./">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l9-5 9 5"/><path d="M3 12l9-5 9 5"/><path d="M3 7l9-5 9 5"/></svg>
+        </span>
+        <span class="brand-name">Mosaico</span>
+      </a>
+      <div class="ctx">
+        <span class="pill pill-accent"><span class="pill-dot" style="background:var(--accent)"></span> FADETA Tajo-Tajuña</span>
+        <span class="muted">EDLP 2023-2027 · PEPAC Castilla-La Mancha</span>
+      </div>
+    </div>
+    <div class="right">
+      <button class="btn btn-quiet btn-sm" id="btn-share" title="Compartir enlace">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="12" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M8.5 13.5l7 3M8.5 10.5l7-3"/></svg>
+        Compartir
+      </button>
+      <a class="btn btn-quiet btn-sm" href="memoria.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>
+        Memoria
+      </a>
+      <button class="btn btn-primary btn-sm" id="btn-export">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+        Exportar
+      </button>
+    </div>
+  </header>
+
+  <!-- ============== Main ============== -->
+  <div class="app-main">
+
+    <!-- ===== Sidebar izquierda ===== -->
+    <aside class="sidebar">
+
+      <div class="side-section">
+        <h4>Indicadores EDLP 23-27</h4>
+        <div class="kpi-row">
+          <div class="kpi">
+            <div class="lbl">Promotores</div>
+            <div class="val" id="kpi-promotores">—</div>
+          </div>
+          <div class="kpi">
+            <div class="lbl">Ayuda</div>
+            <div class="val" id="kpi-ayuda">—<span class="sub">€</span></div>
+          </div>
+          <div class="kpi">
+            <div class="lbl">Inversión</div>
+            <div class="val" id="kpi-inversion">—<span class="sub">€</span></div>
+          </div>
+          <div class="kpi">
+            <div class="lbl">Empleos</div>
+            <div class="val" id="kpi-empleos">—</div>
+          </div>
+        </div>
+        <div style="margin-top:12px;">
+          <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--ink-3); margin-bottom:4px;">
+            <span>Certificado / marco 3,8 M€</span>
+            <span class="mono" id="kpi-pct-label">— %</span>
+          </div>
+          <div style="height:6px; background:var(--bg-tint); border-radius:3px; overflow:hidden;">
+            <div id="kpi-pct-bar" style="height:100%; width:38.8%; background:var(--accent); border-radius:3px; transition:width 320ms ease;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="side-section">
+        <h4>Buscar promotor</h4>
+        <div class="search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input id="search-input" type="text" placeholder="Beneficiario, municipio o sector..." />
+        </div>
+      </div>
+
+      <div class="side-section">
+        <h4>Sector</h4>
+        <div class="filter-group" id="filter-sector"></div>
+      </div>
+
+      <div class="side-section">
+        <h4>Estado</h4>
+        <div class="filter-group" id="filter-estado"></div>
+      </div>
+
+      <div class="side-section">
+        <h4>Línea de ayuda</h4>
+        <div class="filter-group" id="filter-linea"></div>
+      </div>
+
+      <div class="side-section">
+        <h4>Capas territoriales</h4>
+        <div class="layer-toggle" data-layer="proyectos">
+          <span class="name">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 00-8 8c0 5.4 8 12 8 12s8-6.6 8-12a8 8 0 00-8-8z"/></svg>
+            Proyectos LEADER
+          </span>
+          <span class="switch on" data-state="on"></span>
+        </div>
+        <div class="layer-toggle" data-layer="cobertura">
+          <span class="name">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/></svg>
+            Cobertura municipal
+          </span>
+          <span class="switch on" data-state="on"></span>
+        </div>
+        <div class="layer-toggle" data-layer="hidro">
+          <span class="name">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c4 6 8 10 8 14a8 8 0 11-16 0c0-4 4-8 8-14z"/></svg>
+            Hidrografía Tajo-Tajuña
+          </span>
+          <span class="switch" data-state="off"></span>
+        </div>
+        <div class="layer-toggle" data-layer="natura">
+          <span class="name">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V12M5 12a7 7 0 1114 0c0 4-7 10-7 10S5 16 5 12z"/></svg>
+            Red Natura 2000 (orientativo)
+          </span>
+          <span class="switch" data-state="off"></span>
+        </div>
+        <div class="layer-toggle" data-layer="despob">
+          <span class="name">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="10" r="2.5"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5M14 20c0-2 2.5-3.5 4-3.5"/></svg>
+            Riesgo de despoblación
+          </span>
+          <span class="switch" data-state="off"></span>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- ===== Map ===== -->
+    <div class="map-wrap">
+      <div id="map"></div>
+
+      <div class="map-overlay overlay-top-left">
+        <div class="chip" id="reset-filters" style="display:none">
+          <svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3l10 10M13 3L3 13"/></svg>
+          Limpiar filtros
+        </div>
+      </div>
+
+      <div class="map-overlay overlay-bottom-left">
+        <div class="legend">
+          <h5>Símbolo · proyecto LEADER</h5>
+          <div style="display:flex; gap:14px; align-items:center; margin-bottom:8px;">
+            <div style="display:flex; align-items:center; gap:5px;"><span style="width:18px; height:18px; border-radius:50%; background:var(--accent); opacity:.85;"></span><span style="font-size:11px; color:var(--ink-3)">Mayor inversión</span></div>
+            <div style="display:flex; align-items:center; gap:5px;"><span style="width:8px; height:8px; border-radius:50%; background:var(--accent); opacity:.85;"></span><span style="font-size:11px; color:var(--ink-3)">Menor</span></div>
+          </div>
+          <h5>Color · sector</h5>
+          <div id="legend-sectors" style="display:grid; grid-template-columns: 1fr 1fr; gap:2px 8px;"></div>
+        </div>
+      </div>
+
+      <div class="map-overlay overlay-bottom-right">
+        Datos © FADETA · INE · IGN · OSM. Demo Darwin Geospatial.
+      </div>
+    </div>
+
+    <!-- ===== Right details / dashboard ===== -->
+    <aside class="details" id="details">
+      <div class="tab-bar">
+        <button class="tab-btn active" data-tab="dash">
+          <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="2" width="5" height="5"/><rect x="9" y="2" width="5" height="5"/><rect x="2" y="9" width="5" height="5"/><rect x="9" y="9" width="5" height="5"/></svg>
+          Resumen
+        </button>
+        <button class="tab-btn" data-tab="ficha" id="tab-ficha-btn">
+          <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 2h6l4 4v8a1 1 0 01-1 1H4a1 1 0 01-1-1V3a1 1 0 011-1z"/><path d="M10 2v4h4"/></svg>
+          Ficha
+        </button>
+      </div>
+
+      <!-- Tab: Dashboard -->
+      <div class="tab-pane" id="pane-dash">
+        <div class="dash">
+          <h4>Inversión por sector</h4>
+          <div class="dash-bar" id="dash-sector"></div>
+
+          <h4>Top municipios por ayuda</h4>
+          <div class="dash-bar" id="dash-muni"></div>
+
+          <h4>Cobertura territorial</h4>
+          <div class="dash-bar" id="dash-cobertura"></div>
+
+          <div class="coverage-note" id="coverage-note" style="display:none;">
+            <span class="icon">
+              <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="8" r="7"/><path d="M8 5v3M8 11h.01"/></svg>
+            </span>
+            <span><strong>Atención:</strong> <span id="coverage-note-text"></span></span>
+          </div>
+
+          <h4>Alineación con retos EDLP</h4>
+          <div class="dash-bar" id="dash-retos"></div>
+        </div>
+      </div>
+
+      <!-- Tab: Ficha -->
+      <div class="tab-pane hidden" id="pane-ficha">
+        <div class="details-empty" id="ficha-empty">
+          <div class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 00-8 8c0 5.4 8 12 8 12s8-6.6 8-12a8 8 0 00-8-8z"/></svg>
+          </div>
+          <h4>Selecciona un proyecto</h4>
+          <p>Haz clic en cualquier punto del mapa para ver la ficha completa.</p>
+        </div>
+        <div id="ficha-content" class="hidden"></div>
+      </div>
+    </aside>
+
+  </div>
+</div>
+
+<script src="assets/js/visor.js"></script>
+</body>
+</html>
