@@ -401,6 +401,7 @@ function addDataLayers() {
     const est = STATE.estados.find(s => s.id === f.estado);
     popup.setLngLat(e.lngLat)
       .setHTML(`
+        <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;"><span class="tag-demo">demo · ilustrativo</span></div>
         <div class="popup-title">${escape(f.promotor)}</div>
         <div class="popup-meta">${escape(mun?.nombre || '')} · <span style="color:${sec?.color}">●</span> ${escape(sec?.nombre || '')}</div>
         <div class="popup-stat"><span>Inversión</span><span class="v">${fmt.eur(+f.inversion)}</span></div>
@@ -413,16 +414,19 @@ function addDataLayers() {
 
   // Popup en hover sobre municipios (cobertura)
   const popupMun = new maplibregl.Popup({ closeButton: false, closeOnClick: false, offset: 14 });
+  const cabeceras = new Set(['19053','19083','19243','19279']);
   STATE.map.on('mousemove', 'cobertura-circle', (e) => {
     if (!e.features?.length) return;
     const f = e.features[0].properties;
+    const isCabecera = cabeceras.has(f.ine);
+    const popTag = isCabecera ? '<span class="tag-demo tag-real">real</span>' : '<span class="tag-demo tag-aprox">aprox.</span>';
     popupMun.setLngLat(e.lngLat)
       .setHTML(`
-        <div class="popup-title">${escape(f.nombre)}</div>
-        <div class="popup-meta">${fmt.num(+f.poblacion)} hab · ${(+f.area_km2).toFixed(0)} km²</div>
-        <div class="popup-stat"><span>Proyectos</span><span class="v">${f.totalProyectos}</span></div>
-        <div class="popup-stat"><span>Inversión</span><span class="v">${fmt.eurShort(+f.totalInversion)}</span></div>
-        <div class="popup-stat"><span>Ayuda</span><span class="v">${fmt.eurShort(+f.totalAyuda)}</span></div>
+        <div class="popup-title">${escape(f.nombre)} <span class="tag-demo tag-real">real</span></div>
+        <div class="popup-meta">${fmt.num(+f.poblacion)} hab ${popTag} · ${(+f.area_km2).toFixed(0)} km² <span class="tag-demo tag-aprox">aprox.</span></div>
+        <div class="popup-stat"><span>Proyectos <span class="tag-demo">demo</span></span><span class="v">${f.totalProyectos}</span></div>
+        <div class="popup-stat"><span>Inversión <span class="tag-demo">demo</span></span><span class="v">${fmt.eurShort(+f.totalInversion)}</span></div>
+        <div class="popup-stat"><span>Ayuda <span class="tag-demo">demo</span></span><span class="v">${fmt.eurShort(+f.totalAyuda)}</span></div>
       `)
       .addTo(STATE.map);
   });
@@ -704,7 +708,10 @@ function selectProject(id) {
 
   const html = `
     <div class="details-head">
-      <div class="id">${p.id}</div>
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
+        <div class="id">${p.id}</div>
+        <span class="tag-demo">demo · proyecto ilustrativo</span>
+      </div>
       <h3>${escape(p.promotor)}</h3>
       <div class="meta">
         <span class="pill-sec"><span class="dot" style="background:${sec.color}"></span>${escape(sec.nombre)}</span>
@@ -806,6 +813,17 @@ function bindUI() {
     document.body.appendChild(a); a.click(); a.remove();
     URL.revokeObjectURL(url);
   });
+
+  // procedencia link in disclaimer bar → scroll sidebar to procedencia section
+  const procLink = document.getElementById('proc-link');
+  if (procLink) {
+    procLink.addEventListener('click', () => {
+      const target = document.getElementById('proc-section');
+      target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      target?.classList.add('flash');
+      setTimeout(() => target?.classList.remove('flash'), 1200);
+    });
+  }
 
   // share
   document.getElementById('btn-share').addEventListener('click', () => {

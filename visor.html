@@ -49,6 +49,17 @@
     </div>
   </header>
 
+  <!-- ============== Demo disclaimer ============== -->
+  <div class="demo-bar" role="note">
+    <span class="ico">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="7"/><path d="M8 4.5v4M8 11h.01"/></svg>
+    </span>
+    <span>
+      <strong>Demo comercial</strong> · marco financiero, retos EDLP y ámbito son <strong>datos reales</strong> de FADETA; la cartera de proyectos (promotores, importes individuales, descripciones) es <strong>ilustrativa</strong> y se sustituye con datos del GAL en implementación.
+    </span>
+    <a class="lnk" id="proc-link">Procedencia de los datos →</a>
+  </div>
+
   <!-- ============== Main ============== -->
   <div class="app-main">
 
@@ -59,30 +70,33 @@
         <h4>Indicadores EDLP 23-27</h4>
         <div class="kpi-row">
           <div class="kpi">
-            <div class="lbl">Promotores</div>
+            <div class="lbl">Promotores <span class="tag-demo">demo</span></div>
             <div class="val" id="kpi-promotores">—</div>
           </div>
           <div class="kpi">
-            <div class="lbl">Ayuda</div>
+            <div class="lbl">Ayuda <span class="tag-demo">demo</span></div>
             <div class="val" id="kpi-ayuda">—<span class="sub">€</span></div>
           </div>
           <div class="kpi">
-            <div class="lbl">Inversión</div>
+            <div class="lbl">Inversión <span class="tag-demo">demo</span></div>
             <div class="val" id="kpi-inversion">—<span class="sub">€</span></div>
           </div>
           <div class="kpi">
-            <div class="lbl">Empleos</div>
+            <div class="lbl">Empleos <span class="tag-demo">demo</span></div>
             <div class="val" id="kpi-empleos">—</div>
           </div>
         </div>
         <div style="margin-top:12px;">
           <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--ink-3); margin-bottom:4px;">
-            <span>Certificado / marco 3,8 M€</span>
+            <span>Certificado / marco 3,8 M€ <span class="tag-demo tag-real">real</span></span>
             <span class="mono" id="kpi-pct-label">— %</span>
           </div>
           <div style="height:6px; background:var(--bg-tint); border-radius:3px; overflow:hidden;">
             <div id="kpi-pct-bar" style="height:100%; width:38.8%; background:var(--accent); border-radius:3px; transition:width 320ms ease;"></div>
           </div>
+          <p style="font-size:10.5px; color:var(--ink-3); margin-top:6px; line-height:1.4;">
+            Marco 3,8 M€ y % certificado (~38,8 %) son reales. La cifra de la barra se recalcula sobre la cartera simulada y queda en línea con el dato real.
+          </p>
         </div>
       </div>
 
@@ -114,37 +128,84 @@
         <div class="layer-toggle" data-layer="proyectos">
           <span class="name">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 00-8 8c0 5.4 8 12 8 12s8-6.6 8-12a8 8 0 00-8-8z"/></svg>
-            Proyectos LEADER
+            Proyectos LEADER <span class="tag-demo">demo</span>
           </span>
           <span class="switch on" data-state="on"></span>
         </div>
         <div class="layer-toggle" data-layer="cobertura">
           <span class="name">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/></svg>
-            Cobertura municipal
+            Cobertura municipal <span class="tag-demo">demo</span>
           </span>
           <span class="switch on" data-state="on"></span>
         </div>
         <div class="layer-toggle" data-layer="hidro">
           <span class="name">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c4 6 8 10 8 14a8 8 0 11-16 0c0-4 4-8 8-14z"/></svg>
-            Hidrografía Tajo-Tajuña
+            Hidrografía Tajo-Tajuña <span class="tag-demo tag-aprox">aprox.</span>
           </span>
           <span class="switch" data-state="off"></span>
         </div>
         <div class="layer-toggle" data-layer="natura">
           <span class="name">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V12M5 12a7 7 0 1114 0c0 4-7 10-7 10S5 16 5 12z"/></svg>
-            Red Natura 2000 (orientativo)
+            Red Natura 2000 <span class="tag-demo tag-aprox">esquemática</span>
           </span>
           <span class="switch" data-state="off"></span>
         </div>
         <div class="layer-toggle" data-layer="despob">
           <span class="name">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="10" r="2.5"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5M14 20c0-2 2.5-3.5 4-3.5"/></svg>
-            Riesgo de despoblación
+            Riesgo de despoblación <span class="tag-demo tag-aprox">estim.</span>
           </span>
           <span class="switch" data-state="off"></span>
+        </div>
+      </div>
+
+      <!-- ===== Procedencia ===== -->
+      <div class="side-section" id="proc-section">
+        <h4>Procedencia de los datos</h4>
+        <div class="proc">
+          <div class="proc-row">
+            <span class="badge real">Real</span>
+            <span class="txt"><strong>Ámbito FADETA</strong>: 41 municipios + nombres oficiales (RECAMDER, fadeta.es).</span>
+          </div>
+          <div class="proc-row">
+            <span class="badge real">Real</span>
+            <span class="txt"><strong>Marco LEADER 23-27</strong>: 3,8 M€ asignados y 38,8 % certificado (nota oficial dic 2025).</span>
+          </div>
+          <div class="proc-row">
+            <span class="badge real">Real</span>
+            <span class="txt"><strong>Retos EDLP</strong> y sus pesos del diagnóstico participativo (EDLP FADETA 23-27).</span>
+          </div>
+          <div class="proc-row">
+            <span class="badge real">Real</span>
+            <span class="txt"><strong>Población cabeceras</strong>: Brihuega, Cifuentes, Sacedón, Trillo (INE 2024).</span>
+          </div>
+          <div class="proc-row">
+            <span class="badge aprox">Aprox.</span>
+            <span class="txt"><strong>Coordenadas municipales</strong>: centroides aproximados. Sustituibles por geometrías CNIG en implementación.</span>
+          </div>
+          <div class="proc-row">
+            <span class="badge aprox">Aprox.</span>
+            <span class="txt"><strong>Población municipios pequeños</strong> y superficies: estimaciones plausibles, no padrón oficial.</span>
+          </div>
+          <div class="proc-row">
+            <span class="badge aprox">Aprox.</span>
+            <span class="txt"><strong>Códigos INE</strong>: 4 verificados (cabeceras), 37 reconstruidos del rango oficial — cruzar con CSV INE antes de producción.</span>
+          </div>
+          <div class="proc-row">
+            <span class="badge aprox">Aprox.</span>
+            <span class="txt"><strong>Hidrografía y Red Natura</strong>: polilíneas/polígonos esquemáticos dibujados a mano. En producción se conectan WMS oficiales (CHT, MITECO).</span>
+          </div>
+          <div class="proc-row">
+            <span class="badge demo">Demo</span>
+            <span class="txt"><strong>Los 65 proyectos LEADER</strong>: promotores, importes individuales y descripciones son ilustrativos. Las sumas se ajustan a las cifras públicas reales para que el dashboard sea creíble.</span>
+          </div>
+          <div class="proc-row">
+            <span class="badge demo">Demo</span>
+            <span class="txt"><strong>Riesgo de despoblación</strong>: derivado de las poblaciones estimadas. Direccionalmente correcto, no oficial JCCM.</span>
+          </div>
         </div>
       </div>
 

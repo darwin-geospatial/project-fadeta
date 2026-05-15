@@ -193,6 +193,73 @@
     display: inline-grid; place-items: center; color: #fff;
   }
 
+  /* Demo banner inside doc */
+  .demo-alert {
+    margin: 0 0 20px;
+    padding: 12px 14px;
+    border-left: 3px solid #C97B3F;
+    background: #FBF1E7;
+    font-size: 12px;
+    color: #6A4F0E;
+    border-radius: 0 4px 4px 0;
+    line-height: 1.5;
+    display: flex; gap: 10px;
+  }
+  .demo-alert .ico { color: #B17C0E; flex-shrink: 0; margin-top: 2px; }
+  .demo-alert strong { color: #4A3508; }
+  .demo-alert .badges { display:inline-flex; gap:4px; margin-left: 4px; }
+  .doc-procedencia {
+    margin-top: 32px;
+    padding: 18px 20px;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: var(--r-2);
+    font-size: 12px;
+    color: var(--ink-2);
+    line-height: 1.5;
+  }
+  .doc-procedencia h3 {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--ink-3); margin: 0 0 10px;
+    font-weight: 600;
+  }
+  .doc-procedencia .row {
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    gap: 10px;
+    padding: 5px 0;
+    border-bottom: 1px dashed var(--border);
+  }
+  .doc-procedencia .row:last-child { border-bottom: none; }
+  .doc-procedencia .badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 60px; padding: 2px 6px; border-radius: 3px;
+    font-size: 9.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .doc-procedencia .badge.real  { background: var(--accent-soft); color: var(--accent-ink); }
+  .doc-procedencia .badge.aprox { background: #EEF2F7; color: #4A5B70; }
+  .doc-procedencia .badge.demo  { background: #FBF1E7; color: #8B5A1E; }
+  .doc-procedencia strong { color: var(--ink); }
+
+  /* Inline demo tag for memoria values */
+  .tag-mini {
+    display: inline-flex; align-items: center;
+    padding: 1px 5px;
+    background: #FBF1E7;
+    color: #8B5A1E;
+    border: 1px solid #F2DEAF;
+    border-radius: 3px;
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-left: 4px;
+    vertical-align: middle;
+    line-height: 1.4;
+  }
+  .tag-mini.real  { background: var(--accent-soft); color: var(--accent-ink); border-color: transparent; }
+  .tag-mini.aprox { background: #EEF2F7; color: #4A5B70; border-color: #DBE3EE; }
+
   /* Print */
   @media print {
     body { background: #fff; }
@@ -254,6 +321,16 @@
       </div>
     </header>
 
+    <div class="demo-alert">
+      <span class="ico">
+        <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="7"/><path d="M8 4.5v4M8 11h.01"/></svg>
+      </span>
+      <span>
+        <strong>Documento demo</strong> · ámbito (41 municipios), marco financiero (3,8 M€), retos priorizados y % de ejecución del marco son <strong>datos reales</strong> de FADETA. La cartera de 65 proyectos individuales (promotores, importes, descripciones) es <strong>ilustrativa</strong>, diseñada para que las sumas agregadas coincidan con las cifras públicas reales. Ver <em>Procedencia de los datos</em> al final del informe.
+        <span class="badges"><span class="tag-mini real">real</span><span class="tag-mini aprox">aprox.</span><span class="tag-mini">demo</span></span>
+      </span>
+    </div>
+
     <p style="margin-bottom:18px;">
       El presente informe sintetiza la ejecución de la <strong>Estrategia de Desarrollo Local Participativo 2023-2027</strong> de FADETA durante el ejercicio 2024.
       Los datos proceden del seguimiento interno de la federación y se cruzan automáticamente con la base territorial de los 41 municipios del ámbito,
@@ -263,10 +340,10 @@
     <!-- 1. Resumen ejecutivo -->
     <h2><span class="num">1.</span>Resumen ejecutivo</h2>
     <div class="exec-grid">
-      <div class="exec-kpi"><div class="lbl">Promotores</div><div class="v" id="exec-prom">—</div><div class="sub" id="exec-prom-sub">— sectores</div></div>
-      <div class="exec-kpi"><div class="lbl">Inversión movilizada</div><div class="v" id="exec-inv">—</div><div class="sub">Pública + privada</div></div>
-      <div class="exec-kpi"><div class="lbl">Ayuda certificada</div><div class="v" id="exec-ayu">—</div><div class="sub" id="exec-pct">— % marco 23-27</div></div>
-      <div class="exec-kpi"><div class="lbl">Empleos generados</div><div class="v" id="exec-emp">—</div><div class="sub">Creados o consolidados</div></div>
+      <div class="exec-kpi"><div class="lbl">Promotores <span class="tag-mini">demo</span></div><div class="v" id="exec-prom">—</div><div class="sub" id="exec-prom-sub">— sectores</div></div>
+      <div class="exec-kpi"><div class="lbl">Inversión movilizada <span class="tag-mini">demo</span></div><div class="v" id="exec-inv">—</div><div class="sub">Pública + privada</div></div>
+      <div class="exec-kpi"><div class="lbl">Ayuda certificada <span class="tag-mini real">real</span></div><div class="v" id="exec-ayu">—</div><div class="sub" id="exec-pct">— % marco 23-27</div></div>
+      <div class="exec-kpi"><div class="lbl">Empleos generados <span class="tag-mini">demo</span></div><div class="v" id="exec-emp">—</div><div class="sub">Creados o consolidados</div></div>
     </div>
 
     <p id="exec-narrative">Cargando datos...</p>
@@ -309,6 +386,43 @@
     <!-- 6. Conclusiones -->
     <h2><span class="num">6.</span>Conclusiones y recomendaciones</h2>
     <p id="conclusiones">Cargando datos...</p>
+
+    <!-- Procedencia de los datos -->
+    <div class="doc-procedencia">
+      <h3>Procedencia de los datos · qué es real, qué es aproximado, qué es demo</h3>
+      <div class="row">
+        <span class="badge real">Real</span>
+        <span><strong>Ámbito FADETA</strong>: los 41 municipios y sus nombres oficiales (fuente: RECAMDER, fadeta.es).</span>
+      </div>
+      <div class="row">
+        <span class="badge real">Real</span>
+        <span><strong>Marco financiero LEADER 23-27</strong>: 3,8 M€ asignados y 38,8 % certificado a cierre 2024 (nota oficial dic 2025 de FADETA).</span>
+      </div>
+      <div class="row">
+        <span class="badge real">Real</span>
+        <span><strong>Retos priorizados de la EDLP</strong> con sus pesos del diagnóstico participativo (91 %, 81,4 %, 74,5 %, 51,7 %).</span>
+      </div>
+      <div class="row">
+        <span class="badge real">Real</span>
+        <span><strong>Población de las cabeceras comarcales</strong>: Brihuega 2.734, Cifuentes 1.611, Sacedón 1.530, Trillo 1.363 hab (INE 2024).</span>
+      </div>
+      <div class="row">
+        <span class="badge aprox">Aprox.</span>
+        <span><strong>Coordenadas municipales</strong>: centroides aproximados. En implementación se sustituyen por geometrías oficiales descargadas del CNIG.</span>
+      </div>
+      <div class="row">
+        <span class="badge aprox">Aprox.</span>
+        <span><strong>Población y superficie de municipios menores</strong>: estimaciones plausibles a partir del total comarcal. No son del padrón oficial.</span>
+      </div>
+      <div class="row">
+        <span class="badge aprox">Aprox.</span>
+        <span><strong>Códigos INE</strong>: cabeceras verificadas; el resto reconstruido del rango oficial — cruzar con CSV INE antes de producción.</span>
+      </div>
+      <div class="row">
+        <span class="badge demo">Demo</span>
+        <span><strong>Los 65 proyectos LEADER individuales</strong>: nombres de promotor, importes, descripciones y asignación a municipios y sectores son ilustrativos. Sustituibles por la cartera real anonimizada en implementación. Los <em>agregados</em> (sumas, % de ejecución, distribución sectorial) se han ajustado intencionadamente para que coincidan con las cifras públicas reales de ejecución de FADETA en 2024.</span>
+      </div>
+    </div>
 
     <!-- Footer -->
     <div class="doc-foot">
