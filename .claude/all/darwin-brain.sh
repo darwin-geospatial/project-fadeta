@@ -9,6 +9,10 @@
 # The first message of every chat (its session_id not seen yet) also shows the pending tags, from the last fetch: no
 # network, the clock untouched. Tags reach the person directly as a systemMessage banner, and the reply opens with a
 # Second brain heading (Joan, 2026-10-23: a single line in the reply was easy to miss).
+# Hook mode only, the first run of each calendar day (cache/second-brain.page-day) also spawns the builder of the person's
+# second brain page, detached, never waited on (cache/second-brain.page.log keeps its output; a failure line is reported
+# once at the next run). DARWIN_BRAIN_PAGE=0 opts out. Tags not shown before are marked NEW (cache/second-brain.shown);
+# NEW only marks: every pending tag is still shown and offered at each new chat.
 # `darwin-brain.sh <brain> --save "<message>"` (row 051) saves the brain to the cloud in one step: commit everything but
 # local/, pull --rebase, push. It never forces, never touches the clock, and aborts a conflicting rebase.
 set -euo pipefail
@@ -135,7 +139,29 @@ seen = seen_file.read_text().split() if seen_file.exists() else []
 fresh = bool(sid) and sid not in seen  # the first message of this chat
 if fresh:
     seen_file.write_text("\n".join((seen + [sid])[-200:]) + "\n")
+page_log = cache / "second-brain.page.log"
+
+def page_failure() -> str:
+    """The last build's failure, once (one small file read, no network): reported at the very next message."""
+    try:
+        text = page_log.read_text(errors="replace") if page_log.exists() else ""
+        rows = [l for l in text.splitlines() if l.strip()]
+        hit = [l for l in rows if l.startswith(("second brain page failed", "Traceback"))]
+        if not hit:
+            return ""
+        page_log.write_text("")
+    except OSError:
+        return ""
+    reason = rows[-1] if hit[0].startswith("Traceback") else hit[0].removeprefix("second brain page failed:").strip()
+    if reason.startswith("could not open"):
+        return (f"The second brain page was built but {reason}; tell the person once, the page is at "
+                f"../{name}/local/second_brain_report/index.html.")
+    return f"The second brain page could not be built: {reason}; ask the agent to build it (details in {page_log})."
+
+failure = page_failure() if hook else ""
 if not due and not fresh and hook:
+    if failure:
+        say(failure)
     sys.exit(0)
 if due:
     clock.write_text(str(now))  # reset first: the other chats wait 2 h from here, whatever this fetch finds
@@ -151,7 +177,14 @@ remote = [p for p in git("ls-tree", "--name-only", ref, "planning/notifications/
 pending = {pathlib.Path(p).name: p for p in remote}
 pending.update({p.name: None for p in notes.glob("*.md") if p.name not in pending})
 lines, shown = [], []
-for fname in sorted(n for n in pending if n not in handled) if due or fresh else []:
+names_now = sorted(n for n in pending if n not in handled)
+new: list = []
+if hook and (due or fresh):
+    shown_file = cache / "second-brain.shown"
+    old = shown_file.read_text().split() if shown_file.exists() else []
+    new = [n for n in names_now if n not in old]
+    shown_file.write_text("".join(f"{n}\n" for n in [n for n in old if n in names_now] + new))  # pruned: filed tags drop out
+for fname in names_now if due or fresh else []:
     local = notes / fname
     text = local.read_text(encoding="utf-8") if local.exists() else git("show", f"{ref}:{pending[fname]}").stdout
     head, _, body = text.partition("\n\n")
@@ -161,9 +194,10 @@ for fname in sorted(n for n in pending if n not in handled) if due or fresh else
                                                 ("deadline", "due "), ("estimate", "")) if field(k)]
     hint = "".join(f", {e}" for e in extra)
     msg = " ".join(body.split())
-    lines.append(f"- {fname}: from {meta.get('from', '?').strip()}, {meta.get('date', '?').strip()}{hint}: «{msg}»")
+    mark = "NEW " if fname in new else ""
+    lines.append(f"- {mark}{fname}: from {meta.get('from', '?').strip()}, {meta.get('date', '?').strip()}{hint}: «{msg}»")
     short = msg if len(msg) <= 90 else msg[:87].rstrip() + "..."
-    shown.append(f"  {meta.get('from', '?').strip().capitalize()} ({meta.get('date', '?').strip()}): {short}")
+    shown.append(f"  {mark}{meta.get('from', '?').strip().capitalize()} ({meta.get('date', '?').strip()}): {short}")
 def weekly_offer() -> str:
     """Row 048: on a Thursday or Friday, one line per day offering this week's report when no report.pdf exists for the
     ISO week, locally or on the upstream ref. Stamped by date so neither mode repeats it that day."""
@@ -187,7 +221,41 @@ def weekly_offer() -> str:
     return (f"It is {today:%A}: this week's weekly report is not built yet. Offer once to build it with the person "
             "(kb_planning_workflow('weekly_report')); never build it without a yes.")
 
-offer = weekly_offer()
+def page_notes() -> tuple:
+    """Hook mode: spawn today's page build (detached) on the first run of the day. Returns (context lines, opening)."""
+    out, opening = [], False
+    log = cache / "second-brain.page.log"
+    if os.environ.get("DARWIN_BRAIN_PAGE") == "0":
+        return out, opening
+    today = os.environ.get("DARWIN_TODAY") or datetime.date.today().isoformat()
+    day_file = cache / "second-brain.page-day"
+    if day_file.exists() and day_file.read_text().strip() == today:
+        return out, opening
+    day_file.write_text(today)  # first: a slow or failed build never respawns that day
+    root_cache = pathlib.Path(os.environ.get("DARWIN_PLANNING_CACHE") or pathlib.Path.home() / ".cache" / "darwin-planning")
+    found = sorted((d for d in root_cache.glob("*/") if (d / "second_brain_report.py").is_file()),
+                   key=lambda d: d.stat().st_mtime, reverse=True) if root_cache.is_dir() else []
+    if not found:
+        out.append("The second brain page builder is not cached yet: call kb_planning_builders() and write every file of its "
+                   f"bundle into {root_cache}/<version>/ (the builder needs its sibling files), then run python3 <it> ../{name} --person "
+                   f"{name.removeprefix('admin-second-brain-')} --fetch --open (once, so today's page opens).")
+        return out, opening
+    flags = {"creationflags": getattr(subprocess, "DETACHED_PROCESS", 0) | getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0)} \
+        if os.name == "nt" else {"start_new_session": True}
+    try:
+        with open(log, "w") as sink:  # truncated at each spawn
+            subprocess.Popen([sys.executable, str(found[0] / "second_brain_report.py"), str(brain), "--person",
+                              name.removeprefix("admin-second-brain-"), *([] if due else ["--fetch"]), "--open", "--new", *new],  # this run's fetch is the hook's when due
+                             stdin=subprocess.DEVNULL, stdout=sink, stderr=subprocess.STDOUT,
+                             env={**os.environ, "DARWIN_OFFLINE": "1"}, **flags)
+        opening = True
+        out.append(f"Today's second brain page is building: ../{name}/local/second_brain_report/index.html (it opens in the browser).")
+    except OSError as e:
+        out.append(f"The second brain page could not start ({e}).")
+    return out, opening
+
+extra, opening = page_notes() if hook else ([], False)
+offer = "\n".join([weekly_offer(), *([failure] if failure else []), *extra]).strip()
 if not lines:
     if not hook:
         say((f"second brain: no pending tags; next check after {hm(now + EVERY)}" if due else
@@ -197,7 +265,7 @@ if not lines:
         say(offer)
     sys.exit(0)
 banner = (f"SECOND BRAIN · {len(lines)} pending tag{'s' if len(lines) > 1 else ''}\n" + "\n".join(shown)
-          + "\n  Ask Claude to file them.")
+          + "\n  Ask Claude to file them." + ("\n  Your second brain page opens in your browser." if opening else ""))
 say(f"Second brain ../{name}: {len(lines)} pending tag(s) (at the start of each chat and at most every 2 h, one clock "
     "for all chats):\n"
     + "\n".join(lines)
