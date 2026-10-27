@@ -86,10 +86,11 @@ def save_brain(message: str) -> None:
         for marker in ("rebase-merge", "rebase-apply", "MERGE_HEAD"):  # the person's own, never ours to touch
             if (brain / git("rev-parse", "--git-path", marker).stdout.strip()).exists():  # relative to the brain, or absolute
                 fail(f"second brain: a rebase or merge is in progress in ../{name}; finish it first")
-        added = git("add", "-A", "--", ".", ":(exclude)local")
+        # no ":(exclude)local" pathspec: when .gitignore lists local/ (every brain), git add exits 1 on it
+        added = git("add", "-A")
         if added.returncode != 0:
             fail(f"second brain: git add failed: {added.stderr.strip()}")
-        git("reset", "-q", "--", "local")  # anything pre-staged under local/ is never committed
+        git("reset", "-q", "--", "local")  # local/ is never committed, ignored or not
         # an exclude rule hides no tracked file: a private report rebuilt over a saved week must not ride along
         hidden = set(git("ls-files", "-z", "-ci", "--exclude-standard").stdout.split("\0")) - {""}
         private = sorted(hidden & (set(git("diff", "--cached", "-z", "--name-only").stdout.split("\0")) - {""}))
