@@ -15,6 +15,9 @@
 # NEW only marks: every pending tag is still shown and offered at each new chat.
 # `darwin-brain.sh <brain> --save "<message>"` (row 051) saves the brain to the cloud in one step: commit everything but
 # local/, pull --rebase, push. It never forces, never touches the clock, and aborts a conflicting rebase.
+# Autosave (hook mode): every 25 messages of a chat (DARWIN_BRAIN_SAVE_EVERY), work left unsaved in the brain is saved
+# and pushed with that same --save, detached, never waited on (cache/second-brain.save.log; a failure is reported once
+# at the next message). DARWIN_BRAIN_AUTOSAVE=0 opts out.
 set -euo pipefail
 if [ $# -eq 0 ]; then INPUT="$(cat)"; else INPUT="{}"; fi
 exec python3 - "$INPUT" "$@" <<'PY'
@@ -160,6 +163,55 @@ def page_failure() -> str:
     return f"The second brain page could not be built: {reason}; ask the agent to build it (details in {page_log})."
 
 failure = page_failure() if hook else ""
+SAVE_EVERY = int(os.environ.get("DARWIN_BRAIN_SAVE_EVERY", "25"))
+save_log = cache / "second-brain.save.log"
+
+def autosave_failure() -> str:
+    """The last background save's failure, once (one small file read, no network)."""
+    try:
+        rows = [l for l in (save_log.read_text(errors="replace") if save_log.exists() else "").splitlines() if l.strip()]
+        bad = [l for l in rows if l.startswith("second brain:") and any(w in l for w in ("failed", "conflict", "timed out", "in progress"))]
+        if not bad and not any(l.startswith("Traceback") for l in rows):
+            return ""
+        save_log.write_text("")
+    except OSError:
+        return ""
+    return (f"The second brain autosave did not reach the cloud: {(bad or rows)[-1]}; tell the person once and offer "
+            f'bash .claude/all/darwin-brain.sh {name} --save "<message>".')
+
+def autosave() -> str:
+    """Hook mode, every SAVE_EVERY messages of a chat: work left unsaved in the brain is saved and pushed in the
+    background with the same --save (DS-STD-001-009: every change saved at once). Never waits on the network;
+    DARWIN_BRAIN_AUTOSAVE=0 opts out."""
+    if os.environ.get("DARWIN_BRAIN_AUTOSAVE") == "0" or not sid:
+        return ""
+    counts_file = cache / "second-brain.save-count.json"
+    try:
+        counts = json.loads(counts_file.read_text())
+    except (OSError, ValueError):
+        counts = {}
+    counts[sid] = counts.get(sid, 0) + 1
+    count = counts[sid]
+    counts_file.write_text(json.dumps(dict(list(counts.items())[-200:])))
+    if count % SAVE_EVERY:
+        return ""
+    left = unsaved()
+    me = root / ".claude" / "all" / "darwin-brain.sh"
+    if not left or not me.is_file():
+        return ""
+    flags = {"creationflags": getattr(subprocess, "DETACHED_PROCESS", 0) | getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0)} \
+        if os.name == "nt" else {"start_new_session": True}
+    try:
+        with open(save_log, "w") as sink:
+            subprocess.Popen(["bash", str(me), name, "--save",
+                              f"chore(second-brain): autosave {datetime.date.today().isoformat()}"],
+                             cwd=str(root), stdin=subprocess.DEVNULL, stdout=sink, stderr=subprocess.STDOUT, **flags)
+    except OSError as e:
+        return f"The second brain autosave could not start ({e})."
+    return left.split(": save them")[0] + ": saving and pushing them now in the background (autosave, DS-STD-001-009)."
+
+if hook:
+    failure = "\n".join(x for x in (failure, autosave_failure(), autosave()) if x)
 if not due and not fresh and hook:
     if failure:
         say(failure)
