@@ -272,8 +272,8 @@ def weekly_offer() -> str:
         return ""
     stamp.write_text(today.isoformat())
     return (f"It is {today:%A}: this week's weekly report is due and not built yet (mandatory, every week). Start it "
-            "now with kb_planning_workflow('weekly_report'): collect, propose the report, save it to main and post it "
-            "to the Reports group after the person's yes.")
+            "now with kb_planning_workflow('weekly_report'): collect, propose the report, save it to main, then give "
+            "the person the message to paste into the Reports group.")
 
 def page_notes() -> tuple:
     """Hook mode: spawn today's page build (detached) on the first run of the day. Returns (context lines, opening)."""
