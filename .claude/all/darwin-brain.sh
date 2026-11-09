@@ -21,7 +21,7 @@
 set -euo pipefail
 if [ $# -eq 0 ]; then INPUT="$(cat)"; else INPUT="{}"; fi
 exec python3 - "$INPUT" "$@" <<'PY'
-import datetime, json, os, pathlib, re, subprocess, sys, time
+import datetime, json, os, pathlib, re, shutil, subprocess, sys, time
 EVERY = int(os.environ.get("DARWIN_BRAIN_EVERY", "7200"))
 try:
     event = json.loads(sys.argv[1] or "{}")
@@ -296,14 +296,33 @@ def page_notes() -> tuple:
         return out, opening
     flags = {"creationflags": getattr(subprocess, "DETACHED_PROCESS", 0) | getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0)} \
         if os.name == "nt" else {"start_new_session": True}
+    # The page ALWAYS opens in the live view, with the brain-keeper terminal (Gabriel, 2026-11-09): never the plain page.
+    # brain_live.py opens the browser, or just reopens it when it already runs. When it cannot start, the page is still
+    # built but nothing opens, and the person is told exactly what is missing.
+    live = brain / ".claude" / "all" / "brain_live.py"
+    missing = ([] if live.is_file() else [f"{live.relative_to(brain)} (pull the second brain)"]) + \
+        ([] if os.name != "nt" else ["a Mac or Linux machine (the live view needs ttyd and tmux)"]) + \
+        [f"{t} (brew install {t})" for t in ("ttyd", "tmux") if not shutil.which(t)] + \
+        ([] if shutil.which("claude") else ["the claude command (Claude Code)"])
+    if missing:
+        live = None
+        out.append("ERROR: the second brain live view cannot open (the page with the brain-keeper terminal): missing "
+                   + "; ".join(missing) + ". Tell the person in the first line of the reply, and fix it with them; the "
+                   "plain page is not opened.")
     try:
         with open(log, "w") as sink:  # truncated at each spawn
             subprocess.Popen([sys.executable, str(found[0] / "second_brain_report.py"), str(brain), "--person",
-                              name.removeprefix("admin-second-brain-"), *([] if due else ["--fetch"]), "--open", "--new", *new],  # this run's fetch is the hook's when due
+                              name.removeprefix("admin-second-brain-"), *([] if due else ["--fetch"]),
+                              "--new", *new],  # this run's fetch is the hook's when due; never --open: the live view opens it
                              stdin=subprocess.DEVNULL, stdout=sink, stderr=subprocess.STDOUT,
                              env={**os.environ, "DARWIN_OFFLINE": "1"}, **flags)
-        opening = True
-        out.append(f"Today's second brain page is building: ../{name}/local/second_brain_report/index.html (it opens in the browser).")
+            if live:
+                subprocess.Popen([sys.executable, str(live), str(brain)], stdin=subprocess.DEVNULL, stdout=sink,
+                                 stderr=subprocess.STDOUT, **flags)
+        opening = bool(live)
+        if live:
+            out.append(f"Today's second brain page is building: it opens in the live view, http://127.0.0.1:8765/, with "
+                       "the brain-keeper terminal.")
     except OSError as e:
         out.append(f"The second brain page could not start ({e}).")
     return out, opening
@@ -319,7 +338,8 @@ if not lines:
         say(offer)
     sys.exit(0)
 banner = (f"SECOND BRAIN · {len(lines)} pending tag{'s' if len(lines) > 1 else ''}\n" + "\n".join(shown)
-          + "\n  Ask Claude to file them." + ("\n  Your second brain page opens in your browser." if opening else ""))
+          + "\n  Ask Claude to file them." + ("\n  Your second brain opens in the live view, with the terminal." if opening else "")
+          + "".join(f"\n  {e}" for e in extra if e.startswith("ERROR")))
 say(f"Second brain ../{name}: {len(lines)} pending tag(s) (at the start of each chat and at most every 2 h, one clock "
     "for all chats):\n"
     + "\n".join(lines)
