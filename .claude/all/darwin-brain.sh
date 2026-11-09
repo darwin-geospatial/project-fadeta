@@ -271,8 +271,9 @@ def weekly_offer() -> str:
     if any(re.fullmatch(re.escape(base + monday.isoformat()) + r"_[^/]+/report\.pdf", f) for f in listed):
         return ""
     stamp.write_text(today.isoformat())
-    return (f"It is {today:%A}: this week's weekly report is not built yet. Offer once to build it with the person "
-            "(kb_planning_workflow('weekly_report')); never build it without a yes.")
+    return (f"It is {today:%A}: this week's weekly report is due and not built yet (mandatory, every week). Start it "
+            "now with kb_planning_workflow('weekly_report'): collect, propose the report, save it to main and post it "
+            "to the Reports group after the person's yes.")
 
 def page_notes() -> tuple:
     """Hook mode: spawn today's page build (detached) on the first run of the day. Returns (context lines, opening)."""
