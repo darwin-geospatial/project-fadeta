@@ -1,6 +1,6 @@
-# ARCHITECTURE.template.md
+# ONTOLOGY.template.md
 
-> **How to use:** copy this file into a repo as `ARCHITECTURE.md`.
+> **How to use:** copy this file into a repo as `ONTOLOGY.md`.
 > Delete the EXAMPLE block. Fill in the TEMPLATE block for that repo.
 > Sections 3, 4, 5 are optional -- skip entirely if not applicable to the repo.
 
@@ -113,7 +113,7 @@ gs://.../Experiments/<MODEL_ID>/model_weights/      gs://.../Experiments/<MODEL_
 ---
 ---
 
-# ARCHITECTURE -- {repo-name}
+# ONTOLOGY -- {repo-name}
 
 > Agentic context map. Read this before touching any file.
 > Never copy from another repo -- this file maps only what lives here.
