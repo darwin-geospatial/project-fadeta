@@ -30,7 +30,7 @@ log.parent.mkdir(parents=True, exist_ok=True)
 if not log.exists():
     log.write_text("# Why log\n\nOne line per decision a Darwin rule made in this repo: what happened, why, and the rule"
                    " behind it. Written by the Darwin hooks (`.claude/all/darwin-why.sh`); never edit a line, add a new"
-                   " one. The full sessions: `bash .claude/all/darwin-sessions.sh`.\n\n")
+                   " one.\n\n")
 email = subprocess.run(["git", "-C", str(root), "config", "user.email"], capture_output=True, text=True).stdout.strip()
 who = email.split("@")[0] or os.environ.get("USER", "someone")
 body = f"{who} · {what}" + (f" · why: {why}" if why else "") + (f" · rule: {rule}" if rule else "")
