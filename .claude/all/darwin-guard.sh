@@ -14,6 +14,13 @@ try:
     event = json.loads(sys.argv[1] or "{}")
 except json.JSONDecodeError:
     sys.exit(0)
+def why(what: str, reason: str, rule: str) -> None:  # the why log (darwin-why.sh, row 054); never fails the hook
+    try:
+        top = pathlib.Path(os.environ.get("CLAUDE_PROJECT_DIR") or event.get("cwd") or ".")
+        subprocess.run(["bash", str(top / ".claude" / "all" / "darwin-why.sh"), what, reason, rule], timeout=3,
+                       env={**os.environ, "CLAUDE_PROJECT_DIR": str(top)}, capture_output=True)
+    except Exception:
+        pass
 tool = str(event.get("tool_name") or "")
 cmd = str((event.get("tool_input") or {}).get("command") or "")
 # A report page is built by its workflow's builder from story.md, never written by hand (DS-STD-001-006, kb_robin('report')).
@@ -29,6 +36,12 @@ if tool in ("Write", "Edit", "MultiEdit") and path:
                          "story.md (kb_robin('report'), kb_planning_workflow('project_report')); put figures in the "
                          "report's assets/ and run the builder. To review it at the root, copy the built page there "
                          "(it is kept out of git).\n")
+        try:
+            shown = str(pathlib.Path(path).resolve().relative_to(root))
+        except ValueError:
+            shown = rel
+        why(f"refused writing {shown} by hand", "a report page is built by its workflow's builder from story.md",
+            "DS-STD-001-006 rule 6, kb_robin('report')")
         sys.exit(2)
     sys.exit(0)
 ROOT_PAGE = r"[^/\s]*(report|plan|summary|analytics)[^/\s]*\.(html|pdf)"
@@ -41,6 +54,8 @@ if tool == "Bash" and re.search(r"\bgit\s+(add|commit)\b", cmd):
         sys.stderr.write("Darwin: " + ", ".join(loose) + " is a report page at the repo root: a review copy stays "
                          "local and is never committed (unstage it: git restore --staged <file>); the report lives "
                          "in planning/reports/.\n")
+        why("refused committing " + ", ".join(loose), "a review copy at the repo root stays local, never in git",
+            "DS-STD-001-006, darwin-guard.sh")
         sys.exit(2)
 RISKY = (r"\bgit\s+(-C\s+\S+\s+)?(commit|push)\b|deploy\.sh|\bgcloud\s+(run\s+deploy|.*\b(create|delete|update|set-iam-policy)\b)"
          r"|\bgh\s+(pr\s+(create|merge)|release)\b|\bterraform\s+apply\b")
@@ -72,7 +87,11 @@ def repo_id() -> str:
 stops_file = cache / "stops" / f"{repo_id()}.json"
 stops = json.loads(stops_file.read_text()) if stops_file.exists() else {}
 if stops:
-    sys.stderr.write("Darwin STOP open (" + ", ".join(stops) + "): fix it first, then run "
-                     "`bash .claude/all/darwin-done.sh <check> fixed`. This action is blocked until then.\n")
+    sys.stderr.write("Darwin STOP open (" + ", ".join(stops) + "): close it, then run "
+                     "`bash .claude/all/darwin-done.sh <check> fixed` (or `clear`). Only this action waits; keep working "
+                     "on everything else meanwhile.\n")
+    act = cmd.strip().splitlines()[0][:80] if cmd.strip() else tool
+    why(f"refused `{act}`", "a STOP check is open: " + ", ".join(stops) + "; commit, push, deploy and send wait for it",
+        "; ".join(str(v.get("call", k)) for k, v in stops.items()))
     sys.exit(2)
 PY

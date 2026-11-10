@@ -302,7 +302,7 @@ def page_notes() -> tuple:
     live = brain / ".claude" / "all" / "brain_live.py"
     missing = ([] if live.is_file() else [f"{live.relative_to(brain)} (pull the second brain)"]) + \
         ([] if os.name != "nt" else ["a Mac or Linux machine (the live view needs ttyd and tmux)"]) + \
-        [f"{t} (brew install {t})" for t in ("ttyd", "tmux") if not shutil.which(t)] + \
+        [f"{t} (" + ("brew install " + t if sys.platform == "darwin" else "sudo apt install " + t + (" && sudo systemctl disable --now ttyd" if t == "ttyd" else "")) + ")" for t in ("ttyd", "tmux") if not shutil.which(t)] + \
         ([] if shutil.which("claude") else ["the claude command (Claude Code)"])
     if missing:
         live = None

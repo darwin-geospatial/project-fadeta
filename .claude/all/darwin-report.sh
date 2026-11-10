@@ -16,6 +16,13 @@ try:
     event = json.loads(sys.argv[1] or "{}")
 except json.JSONDecodeError:
     sys.exit(0)
+def why(what: str, reason: str, rule: str) -> None:  # the why log (darwin-why.sh, row 054); never fails the hook
+    try:
+        top = pathlib.Path(os.environ.get("CLAUDE_PROJECT_DIR") or event.get("cwd") or ".")
+        subprocess.run(["bash", str(top / ".claude" / "all" / "darwin-why.sh"), what, reason, rule], timeout=3,
+                       env={**os.environ, "CLAUDE_PROJECT_DIR": str(top)}, capture_output=True)
+    except Exception:
+        pass
 STAMP = 'name="generator" content="darwin-planning-builder"'
 root = pathlib.Path(os.environ.get("CLAUDE_PROJECT_DIR") or event.get("cwd") or ".").resolve()
 if not (root / "planning").is_dir():
@@ -59,6 +66,8 @@ if bad:
     sys.stderr.write("Darwin: hand-made report page(s): " + ", ".join(bad) + ". A report page is built by its workflow's "
                      "builder from story.md (kb_robin('report')); a repo script writes only figures and numbers into the "
                      "report's assets/. Delete or restore the page(s), then build the report with its builder.\n")
+    why("refused hand-made report page(s) " + ", ".join(bad), "the page has no planning builders' stamp",
+        "DS-STD-001-006 rule 6, kb_robin('report')")
     sys.exit(2)
 
 # 2. the first report-like action of the session calls Robin

@@ -30,6 +30,13 @@ def repo_id() -> str:
     r = subprocess.run(["git", "-C", str(root), "remote", "get-url", "origin"], capture_output=True, text=True)
     return re.sub(r"\.git$", "", r.stdout.strip().rstrip("/").split("/")[-1]) if r.returncode == 0 and r.stdout.strip() else root.name
 
+def why(what: str, reason: str, rule: str) -> None:  # the why log (darwin-why.sh, row 054); never fails the hook
+    try:
+        top = pathlib.Path(os.environ.get("CLAUDE_PROJECT_DIR") or event.get("cwd") or ".")
+        subprocess.run(["bash", str(top / ".claude" / "all" / "darwin-why.sh"), what, reason, rule], timeout=3,
+                       env={**os.environ, "CLAUDE_PROJECT_DIR": str(top)}, capture_output=True)
+    except Exception:
+        pass
 repo = repo_id()
 table = cache / f"ticks-{repo}.json"
 if not table.exists() or time.time() - table.stat().st_mtime > 86400:
@@ -67,14 +74,28 @@ stops = json.loads(stops_file.read_text()) if stops_file.exists() else {}
 for r in due:
     if r.get("blocking") == "yes" and r["id"] not in stops:
         stops[r["id"]] = {"since": count, "call": r["call"]}
+        why(f"STOP opened: {r['id']} (message {count})", r.get("description", ""), r["call"])
 stops_file.write_text(json.dumps(stops))
 
-lines = [f"- {r['id']}: if {r['applies_when']}, call {r['call']} and do it ({r['description']})" for r in due]
+# A STOP runs in parallel with the work: start it in the background and keep going; only commit, push, deploy
+# and sending wait for it (darwin-guard.sh). Waiting on a check must never slow the person down.
+PARALLEL = " [runs in parallel: start it in the background and keep working; only commit, push, deploy and send wait for it]"
+lines = [f"- {r['id']}: if {r['applies_when']}, call {r['call']} and do it ({r['description']})"
+         + (PARALLEL if r.get("blocking") == "yes" else "") for r in due]
 due_ids = {r["id"] for r in due}
-lines = [f"- OPEN STOP {sid} (since message {st['since']}): do nothing else until it is fixed, then run "
-         f"`bash .claude/all/darwin-done.sh {sid} fixed` (or `clear` if nothing was found)"
+lines = [f"- OPEN STOP {sid} (since message {st['since']}): keep working; reading, editing and building stay free. "
+         f"Only commit, push, deploy and send wait until it closes: `bash .claude/all/darwin-done.sh {sid} clear` "
+         f"(nothing found) or `fixed` (every BLOCK fixed)"
          for sid, st in stops.items() if sid not in due_ids] + lines
 if lines:
-    msg = f"Darwin checks due (message {count}, repo {repo}):\n" + "\n".join(lines)
+    msg = (f"Darwin checks due (message {count}, repo {repo}):\n" + "\n".join(lines)
+           + "\nSay each check to the person in one visible line before acting on it, e.g. "
+             "`Robin (report): <family> / <template>, audience <internal|partner|customer>, for <reader>`.")
+    if due and sys.platform == "darwin" and os.environ.get("DARWIN_NOTIFY", "1") != "0":
+        try:  # a desktop notification that Robin is on it (Gabriel, 2026-10-26); never blocks the prompt
+            subprocess.Popen(["osascript", "-e", 'display notification "' + ", ".join(r["id"] for r in due)
+                              + '" with title "Robin is on it"'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        except OSError:
+            pass
     print(json.dumps({"hookSpecificOutput": {"hookEventName": "UserPromptSubmit", "additionalContext": msg}}))
 PY

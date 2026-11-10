@@ -23,7 +23,14 @@ f = cache / "stops" / f"{repo_id()}.json"
 stops = json.loads(f.read_text()) if f.exists() else {}
 if check not in stops:
     sys.exit(f"no open STOP {check}; open: {', '.join(stops) or 'none'}")
+call = str(stops[check].get("call", check)) if isinstance(stops[check], dict) else check
 del stops[check]
 f.write_text(json.dumps(stops))
+try:  # the why log (darwin-why.sh, row 054)
+    subprocess.run(["bash", str(root / ".claude" / "all" / "darwin-why.sh"), f"STOP closed: {check} ({result})",
+                    "the check ran and found nothing" if result == "clear" else "every BLOCK it found was fixed", call],
+                   timeout=3, env={**os.environ, "CLAUDE_PROJECT_DIR": str(root)}, capture_output=True)
+except Exception:
+    pass
 print(f"closed {check} ({result}); still open: {', '.join(stops) or 'none'}")
 PY
