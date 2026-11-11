@@ -9,7 +9,7 @@
 # The first message of every chat (its session_id not seen yet) also shows the pending tags, from the last fetch: no
 # network, the clock untouched. Tags reach the person directly as a systemMessage banner, and the reply opens with a
 # Second brain heading (Joan, 2026-10-23: a single line in the reply was easy to miss).
-# Hook mode only, the first run of each calendar day (cache/second-brain.page-day) also spawns the builder of the person's
+# Hook mode only, the first run of each day from 08:00 local time (DARWIN_DAY_START; cache/second-brain.page-day) also spawns the builder of the person's
 # second brain page, detached, never waited on (cache/second-brain.page.log keeps its output; a failure line is reported
 # once at the next run). DARWIN_BRAIN_PAGE=0 opts out. Tags not shown before are marked NEW (cache/second-brain.shown);
 # NEW only marks: every pending tag is still shown and offered at each new chat.
@@ -281,7 +281,11 @@ def page_notes() -> tuple:
     log = cache / "second-brain.page.log"
     if os.environ.get("DARWIN_BRAIN_PAGE") == "0":
         return out, opening
-    today = os.environ.get("DARWIN_TODAY") or datetime.date.today().isoformat()
+    # The day starts at 08:00 in the person's local time (the machine clock), not at midnight (Gabriel, 2026-11-10):
+    # a chat at 02:00 still counts as the day before, so the page opens at the first chat from 08:00 on.
+    # DARWIN_DAY_START=<hour> changes the hour for one person (0 = midnight, the old behaviour).
+    start = int(os.environ.get("DARWIN_DAY_START") or 8)
+    today = os.environ.get("DARWIN_TODAY") or (datetime.datetime.now() - datetime.timedelta(hours=start)).date().isoformat()
     day_file = cache / "second-brain.page-day"
     if day_file.exists() and day_file.read_text().strip() == today:
         return out, opening

@@ -3,7 +3,7 @@
 # 2026-11-09, row 054). Single source: admin-darwin-agents/templates/context/claude-all/ (never edit a copy).
 #   bash .claude/all/darwin-why.sh "<what happened>" "<why>" "<rule or source>"
 # The hooks call it on every refusal and every STOP opened or closed; an agent calls it by hand when it declines
-# or chooses on a rule. It writes planning/why.md of the repo (the team reads it in VS Code and it is committed
+# or chooses on a rule. It writes planning/why.md of the repo (the team reads it in Orca or any editor and it is committed
 # with the rest of planning/), or ~/.cache/darwin/why/<repo>.md when the repo has no planning/. The same line twice
 # within 10 minutes is written once. It never fails the caller.
 set -uo pipefail
