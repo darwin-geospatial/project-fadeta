@@ -76,9 +76,6 @@ python -m http.server 8000
 
 # Node
 npx serve .
-
-# VS Code
-# Instala "Live Server" y abre index.html con "Open with Live Server"
 ```
 
 Luego abre `http://localhost:8000` en el navegador.
