@@ -77,20 +77,22 @@ for r in due:
         why(f"STOP opened: {r['id']} (message {count})", r.get("description", ""), r["call"])
 stops_file.write_text(json.dumps(stops))
 
-# A STOP runs in parallel with the work: start it in the background and keep going; only commit, push, deploy
-# and sending wait for it (darwin-guard.sh). Waiting on a check must never slow the person down.
-PARALLEL = " [runs in parallel: start it in the background and keep working; only commit, push, deploy and send wait for it]"
+# Every check runs in a background subagent, never in the main agent (Gabriel, 2026-11-16: "Robin checks should
+# always be subagents, never stop the main agent"). The main agent starts it and keeps working; the subagent does the
+# check, fixes or reports, and closes its STOP itself with darwin-done.sh.
+PARALLEL = " [blocking check: the subagent closes it with darwin-done.sh when done]"
 lines = [f"- {r['id']}: if {r['applies_when']}, call {r['call']} and do it ({r['description']})"
          + (PARALLEL if r.get("blocking") == "yes" else "") for r in due]
 due_ids = {r["id"] for r in due}
-lines = [f"- OPEN STOP {sid} (since message {st['since']}): keep working; reading, editing and building stay free. "
-         f"Only commit, push, deploy and send wait until it closes: `bash .claude/all/darwin-done.sh {sid} clear` "
-         f"(nothing found) or `fixed` (every BLOCK fixed)"
+lines = [f"- OPEN STOP {sid} (since message {st['since']}): its subagent is on it; keep working on everything, "
+         f"commit and push included. The subagent closes it: `bash .claude/all/darwin-done.sh {sid} clear` "
+         f"(nothing found) or `fixed` (every BLOCK fixed); if no subagent is running it, start one in the background"
          for sid, st in stops.items() if sid not in due_ids] + lines
 if lines:
     msg = (f"Darwin checks due (message {count}, repo {repo}):\n" + "\n".join(lines)
-           + "\nSay each check to the person in one visible line before acting on it, e.g. "
-             "`Robin (report): <family> / <template>, audience <internal|partner|customer>, for <reader>`.")
+           + "\nRun EVERY check in a background subagent (Agent tool, run_in_background: true), never in the main "
+             "agent: start it, say it in one visible line (e.g. `Robin (report): checking in a subagent`) and keep "
+             "working on the person's task without waiting. Report the subagent's result in one line when it lands.")
     if due and sys.platform == "darwin" and os.environ.get("DARWIN_NOTIFY", "1") != "0":
         try:  # a desktop notification that Robin is on it (Gabriel, 2026-10-26); never blocks the prompt
             subprocess.Popen(["osascript", "-e", 'display notification "' + ", ".join(r["id"] for r in due)

@@ -87,11 +87,11 @@ def repo_id() -> str:
 stops_file = cache / "stops" / f"{repo_id()}.json"
 stops = json.loads(stops_file.read_text()) if stops_file.exists() else {}
 if stops:
-    sys.stderr.write("Darwin STOP open (" + ", ".join(stops) + "): close it, then run "
-                     "`bash .claude/all/darwin-done.sh <check> fixed` (or `clear`). Only this action waits; keep working "
-                     "on everything else meanwhile.\n")
-    act = cmd.strip().splitlines()[0][:80] if cmd.strip() else tool
-    why(f"refused `{act}`", "a STOP check is open: " + ", ".join(stops) + "; commit, push, deploy and send wait for it",
-        "; ".join(str(v.get("call", k)) for k, v in stops.items()))
-    sys.exit(2)
+    # Checks never stop the main agent (Gabriel, 2026-11-16): an open STOP is a reminder, not a refusal. Its subagent
+    # works in the background and closes it with darwin-done.sh.
+    msg = ("Darwin STOP open (" + ", ".join(stops) + "): not blocking. Make sure a background subagent is running the "
+           "check (start one if not) and keep going; it closes the STOP with `bash .claude/all/darwin-done.sh <check> "
+           "fixed` (or `clear`).")
+    print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "additionalContext": msg}}))
+    sys.exit(0)
 PY

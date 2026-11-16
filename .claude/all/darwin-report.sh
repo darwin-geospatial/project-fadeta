@@ -75,7 +75,8 @@ flag = cache / "sessions" / f"{session}.robin-report"
 if not flag.exists() and re.search(r"planning/|\.html\b|\.pdf\b|report|story\.md", text, re.I):
     flag.parent.mkdir(parents=True, exist_ok=True)
     flag.write_text(tool)
-    msg = ("Darwin: this action works on planning/ or makes a page. Before the next file of any report, plan, summary "
-           "or analysis, call kb_robin('report') and do it (Robin names the workflow and its builder).")
+    msg = ("Darwin: this action works on planning/ or makes a page. Start a background subagent that calls "
+           "kb_robin('report') and reports which workflow and builder apply; keep working meanwhile and follow its "
+           "answer when it lands (Robin checks never stop the main agent).")
     print(json.dumps({"hookSpecificOutput": {"hookEventName": "PostToolUse", "additionalContext": msg}}))
 PY
